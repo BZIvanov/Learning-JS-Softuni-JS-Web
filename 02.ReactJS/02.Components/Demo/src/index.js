@@ -22,11 +22,7 @@ class StarWarsPeopleList extends Component {
 
     return (
       <ul>
-        {
-          people.map(person => {
-            return <li>{person.name}</li>
-          }) 
-        }
+        {people.map(person => <li>{person.name}</li> )}
       </ul>
     );
   }
