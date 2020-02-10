@@ -18,6 +18,7 @@ module.exports = () => {
         });
     }));
 
+    // serializeUser is going to store the user in the session
     passport.serializeUser((user, done) => {
         if (user) {
             return done(null, user._id);
