@@ -9,11 +9,14 @@ const database = require('./config/database.config');
 
 database(config[environment]);
 
-http.createServer((req, res) => {
+const server = http.createServer((req, res) => {
     for(let handler of handlers) {
         // if the requested url is matched by one of the handlers we will display it and break from the loop
         if(!handler(req, res)) {
             break;
         }
     }
-}).listen(port, () => console.log(`Listening on port ${port}...`));
+})
+
+// second parameter if provided is for the host
+server.listen(port, '127.0.0.1', () => console.log(`Listening on port ${port}...`));

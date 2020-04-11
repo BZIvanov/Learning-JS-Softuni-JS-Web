@@ -15,7 +15,6 @@ module.exports = (req, res) => {
 
         fs.readFile(filePath, (err, data) => {
             if(err) {
-                console.log(err);
                 res.writeHead(404, {
                     // content type for internet search use mime types
                     'Content-Type': 'text/plain'

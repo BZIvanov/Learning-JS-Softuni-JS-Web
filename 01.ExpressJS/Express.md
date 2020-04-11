@@ -1,3 +1,7 @@
+# Node JS
+
+Node JS is single threaded.
+
 # Express
 
 ## Installing MongoDB on Ubuntu
