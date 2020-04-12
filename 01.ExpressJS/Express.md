@@ -2,7 +2,21 @@
 
 Node JS is single threaded.
 
+## Streams
+
+There are 4 type of streams
+
+- Readable
+- Writable
+- Duplex - it is both readable and writeable. Recommended to use *pipe* in case reading is faster/slower than writing
+- Transform - example is zipping
+
 # Express
+
+## Installing MongoDB on Windows
+
+After you install MongoDB create the following folder *C:\data\db* Without this folder MongoDB will not work.
+To start your mongo server go to installation folder *C:\Program Files\MongoDB\Server\4.2\bin* and open the terminal there and run **mongod**
 
 ## Installing MongoDB on Ubuntu
 
@@ -38,3 +52,7 @@ mongoexport --db project-one --collection movies --out resultExport.json
 ```bash
 mongoimport --db project-one --collection movies --file resultExport.json
 ```
+
+## Code quality
+
+To use ESLint and Prettier install all the dependencies and create config files for both es-lint and prettier.
