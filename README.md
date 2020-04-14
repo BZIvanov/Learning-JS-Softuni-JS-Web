@@ -8,16 +8,21 @@ To separate them, when installing we can specify which are for development only 
 ```javascript
 npm install nodemon --save-dev
 ```
+
 -dev in the end will place it in dev dependencies in the package.json file.
 
 ---
 
 ## Nodemon
 
-Nodemon is a utility that will monitor for any changes in your source and automatically restart your server. Perfect for development.
+Nodemon is a utility that will monitor for any changes in your source and automatically restart your server.
 
 Just use nodemon instead of node to run your code, and now your process will automatically restart when your code changes. To install from your terminal run:
 
 ```javascript
-npm install -g nodemon
+npm install nodemon --save-dev
 ```
+
+## ESLint and Prettier
+
+In order for them to work make sure you have enabled _Format On Save_ option in VS Code. You can find that option _File>Preferences>Settings_.

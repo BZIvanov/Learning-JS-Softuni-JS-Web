@@ -8,7 +8,7 @@ function validateUser(req, res) {
   if (!errors.isEmpty()) {
     res.status(422).json({
       message: 'Validation failed, entered data is incorrect',
-      errors: errors.array()
+      errors: errors.array(),
     });
     return false;
   }
@@ -18,27 +18,30 @@ function validateUser(req, res) {
 
 module.exports = {
   signUp: (req, res, next) => {
-
     if (validateUser(req, res)) {
-      const {  username, password,email } = req.body;
+      const { username, password, email } = req.body;
       const salt = encryption.generateSalt();
       const hashedPassword = encryption.generateHashedPassword(salt, password);
-      User.create({ 
+      User.create({
         email,
         hashedPassword,
         username,
-        salt
-      }).then((user) => {
-        res.status(201)
-          .json({ message: 'User created!', userId: user._id, username: user.username });
+        salt,
       })
-      .catch((error) => {
-        if (!error.statusCode) {
-          error.statusCode = 500;
-        }
+        .then((user) => {
+          res.status(201).json({
+            message: 'User created!',
+            userId: user._id,
+            username: user.username,
+          });
+        })
+        .catch((error) => {
+          if (!error.statusCode) {
+            error.statusCode = 500;
+          }
 
-        next(error);
-      });
+          next(error);
+        });
     }
   },
   signIn: (req, res, next) => {
@@ -47,38 +50,41 @@ module.exports = {
     User.findOne({ username })
       .then((user) => {
         if (!user) {
-          const error = new Error('A user with this username could not be found');
+          const error = new Error(
+            'A user with this username could not be found'
+          );
           error.statusCode = 401;
           throw error;
         }
 
-        if(!user.authenticate(password)) {
+        if (!user.authenticate(password)) {
           const error = new Error('A user with this email could not be found');
           error.statusCode = 401;
           throw error;
         }
 
-        const token = jwt.sign({ 
-          username: user.username,
-          userId: user._id.toString()
-        }
-        , 'somesupersecret'
-        , { expiresIn: '1h' });
+        const token = jwt.sign(
+          {
+            username: user.username,
+            userId: user._id.toString(),
+          },
+          'somesupersecret',
+          { expiresIn: '1h' }
+        );
 
-         res.status(200).json(
-           { 
-             message: 'User successfully logged in!', 
-             token, 
-             userId: user._id.toString(),
-             username: user.username
-           });
+        res.status(200).json({
+          message: 'User successfully logged in!',
+          token,
+          userId: user._id.toString(),
+          username: user.username,
+        });
       })
-      .catch(error => {
+      .catch((error) => {
         if (!error.statusCode) {
           error.statusCode = 500;
         }
-
+        // if we call next with parameter it will go to the global error handler, because parameters to the next method are considered errors
         next(error);
-      })
-  }
+      });
+  },
 };
