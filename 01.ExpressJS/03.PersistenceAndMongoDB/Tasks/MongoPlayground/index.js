@@ -4,8 +4,7 @@ const qs = require('querystring');
 const port = process.env.PORT || 5000;
 const handlers = require('./handlers/handlerBlender');
 
-
-require('./config/db')()
+require('./config/db')();
 
 http
   .createServer((req, res) => {
@@ -18,4 +17,4 @@ http
     }
   })
   .listen(port);
-  console.log('Connected');
+console.log('Connected');
