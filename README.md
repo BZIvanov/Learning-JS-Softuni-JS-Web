@@ -26,3 +26,5 @@ npm install nodemon --save-dev
 ## ESLint and Prettier
 
 In order for them to work make sure you have enabled _Format On Save_ option in VS Code. You can find that option _File>Preferences>Settings_.
+
+To see the warnings from ESLint you need to have open VS Code on the root level with the configurations files for prettier and eslint.

@@ -15,6 +15,7 @@
   <ul>
     {{#each latest}}
     <li>
+      {{!-- Should be working without this as well --}}
       <a href="/article/details/{{this._id}}">{{this.title}}</a>
     </li>
     {{/each}}

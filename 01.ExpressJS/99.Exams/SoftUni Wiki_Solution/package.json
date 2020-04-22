@@ -6,6 +6,7 @@
   "engine": ">=7.6",
   "scripts": {
     "start": "node index.js",
+    "debug": "nodemon --inspect-brk index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "eslint": "^5.11.1",
-    "eslint-config-google": "^0.11.0"
+    "eslint-config-google": "^0.11.0",
+    "nodemon": "^1.18.9"
   }
 }

@@ -19,30 +19,30 @@
                 <a href="/article/latest">Latest Article</a>
                 <a href="/article/all">All Articles</a>
                 <form action="/search" method="GET">
-                    <input type="text" name="query" >
+                    <input type="text" name="query">
                     <input type="submit" value="Search">
                 </form>
                 {{#if currentUser}}
-                     <a href="/article/create">Create New Article</a>
+                <a href="/article/create">Create New Article</a>
                 {{/if}}
             </nav>
         </aside>
         <div id="container">
             <header>
                 {{#if currentUser}}
-                      <span>Welcome, {{email}}!</span>
-                      <a href="/logout">[Logout]</a>
+                <span>Welcome, {{currentUser.email}}!</span>
+                <a href="/logout">[Logout]</a>
                 {{else}}
-                    <a href="/login">Login</a>
-                    <a href="/register">Register</a>
+                <a href="/login">Login</a>
+                <a href="/register">Register</a>
                 {{/if}}
             </header>
             <main>
                 <h1>Welcome to SoftUni Wiki!</h1>
-                   {{#if globalError}}
-                        <span>{{globalError}}</span> 
-                   {{/if}} 
-                  {{{body}}}
+                {{#if globalError}}
+                <span>{{globalError}}</span>
+                {{/if}}
+                {{{body}}}
             </main>
             <footer>
                 SoftUni Wiki &copy; 2018

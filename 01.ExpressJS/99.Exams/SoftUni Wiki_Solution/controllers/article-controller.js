@@ -5,11 +5,11 @@ const User = require('../models/User');
 function validateArticle(article) {
   let errors = [];
 
-  if (article.title === "") {
+  if (article.title === '') {
     errors.push('Title is required!');
   }
 
-  if (article.content === "") {
+  if (article.content === '') {
     errors.push('Content is required!');
   }
 
@@ -28,8 +28,8 @@ module.exports = {
     const articleData = req.body;
     const editData = {
       author: req.user._id,
-      content: articleData.content
-    }
+      content: articleData.content,
+    };
     const errors = validateArticle(articleData);
     if (errors) {
       res.locals.globalError = errors.join('\n');
@@ -37,17 +37,17 @@ module.exports = {
       return;
     }
 
-    Promise.all([ Article.create(articleData), Edit.create(editData) ])
-      .then(([ article, edit ]) => {
-          edit.article = article._id;
-          article.edits.push(edit._id);
-          req.user.edits.push(edit._id);
+    Promise.all([Article.create(articleData), Edit.create(editData)])
+      .then(([article, edit]) => {
+        edit.article = article._id;
+        article.edits.push(edit._id);
+        req.user.edits.push(edit._id);
 
-          return Promise.all([ 
-            User.findByIdAndUpdate(req.user._id, req.user),
-            Article.findByIdAndUpdate(article._id, article),
-            Edit.findByIdAndUpdate(edit._id, edit) 
-          ]);
+        return Promise.all([
+          User.findByIdAndUpdate(req.user._id, req.user),
+          Article.findByIdAndUpdate(article._id, article),
+          Edit.findByIdAndUpdate(edit._id, edit),
+        ]);
       })
       .then(() => {
         res.redirect('/');
@@ -59,7 +59,7 @@ module.exports = {
       .sort({ title: 'ascending' })
       .select('_id title')
       .then((articleTitles) => {
-        res.render('article/all', { titles: articleTitles})
+        res.render('article/all', { titles: articleTitles });
       })
       .catch(console.error);
   },
@@ -68,8 +68,7 @@ module.exports = {
       .populate('edits')
       .then((article) => {
         const edits = article.edits;
-        let splitedContent = edits[edits.length - 1].content
-          .split('\r\n\r\n');
+        let splitedContent = edits[edits.length - 1].content.split('\r\n\r\n');
         article.splitedContent = splitedContent;
         res.render('article/details', article);
       })
@@ -78,7 +77,7 @@ module.exports = {
   editGet: (req, res) => {
     Article.findById(req.params.id)
       .populate({
-        path: 'edits'
+        path: 'edits',
       })
       .then((article) => {
         if (article.isLocked && req.user.roles.indexOf('Admin') === -1) {
@@ -98,8 +97,8 @@ module.exports = {
     const editBody = {
       author: req.user._id,
       content: newContent,
-      article: articleId
-    }
+      article: articleId,
+    };
 
     Promise.all([Article.findById(articleId), Edit.create(editBody)])
       .then(([a, e]) => {
@@ -108,8 +107,8 @@ module.exports = {
 
         return Promise.all([
           User.findByIdAndUpdate(req.user._id, req.user),
-          Article.findByIdAndUpdate(a._id, a)
-        ])
+          Article.findByIdAndUpdate(a._id, a),
+        ]);
       })
       .then(() => {
         res.redirect(`/article/history/${articleId}`);
@@ -120,12 +119,12 @@ module.exports = {
     const articleId = req.params.id;
 
     Article.findById(articleId)
-      .populate({ 
-        path: 'edits', 
-        options: { 
-          populate: { path: 'author' }, 
-          sort: { 'creationDate': -1 } 
-        } 
+      .populate({
+        path: 'edits',
+        options: {
+          populate: { path: 'author' },
+          sort: { creationDate: -1 },
+        },
       })
       .then((article) => {
         res.render('article/history', article);
@@ -148,21 +147,19 @@ module.exports = {
         a.isLocked = false;
         a.save().then(() => {
           res.redirect(`/article/details/${a._id}`);
-        })
+        });
       })
       .catch(console.error);
   },
   getLatest: (req, res) => {
-    Article
-      .find({})
+    Article.find({})
       .sort({ creationDate: 'descending' })
       .limit(1)
       .populate('edits')
       .then((articles) => {
         const latestArticle = articles[0];
         const edits = latestArticle.edits;
-        let splitedContent = edits[edits.length - 1].content
-          .split('\r\n\r\n');
+        let splitedContent = edits[edits.length - 1].content.split('\r\n\r\n');
         latestArticle.splitedContent = splitedContent;
         res.render('article/details', latestArticle);
       })
@@ -176,5 +173,5 @@ module.exports = {
         res.render('article/edit-details', e);
       })
       .catch(console.error);
-  }
-}
+  },
+};
