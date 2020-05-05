@@ -1,4 +1,6 @@
 const express = require('express');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 
 // this will catch errors like undefined variable for example
 process.on('uncaughtException', (err) => {
@@ -10,6 +12,12 @@ process.on('uncaughtException', (err) => {
 
 const config = require('./config/config');
 const app = express();
+
+// this package will prevent hacker queries. For example instead of data, object query is provided like { email: { $gt: "" } }
+app.use(mongoSanitize());
+
+// xss module will replace html symbols from incoming requests data, so no js code can be included with it
+app.use(xss());
 
 const env = 'development';
 require('./config/database')(config[env]);
