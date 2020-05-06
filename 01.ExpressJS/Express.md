@@ -70,6 +70,8 @@ In the package.json for scripts we need to specify, that we will start our app w
 
 #### Other Hints
 
+- **module** is a single file and **package** is multiple files working together. So package is a combination of multiple modules.
+
 - If we want to read file just once, not on every request, we can put the reading piece of code outside the createServer method, because outside that method the code is read only once.
 
 - projection - this termin in mongoDB refers to selecting only specific fields/columns from our document/row
@@ -78,4 +80,31 @@ In the package.json for scripts we need to specify, that we will start our app w
 
 - global error handler, which is a normal middleware is recognized by Express providing 4 instead of 3 parameters, where the first parameter is the error
 
+```javascript
+// this is how the global error middleware looks like
+next(err, req, res, next) => {
+  // some code here
+}
+```
+
 - if we pass an argument to the next() method the global error handler will be called
+
+```javascript
+// next here will go directly to the global error handler
+next(somethingHere);
+
+// next here will go the next middleware in our app
+next();
+```
+
+- when exporting we usually have to use module.exports, but that is when we are reasigning the exported object, because exports is an object. Meaning if we want to export only a string we must use module.exports, but if we want to just attach property on the exports object we can skip module. part. Below is example.
+
+The key thing here is that exports by default is an empty object
+
+```javascript
+// here is ok not to use module because we are not reasigning the default exports object. Now our exports object will have an additional field called fruit
+exports.fruit = 'apple';
+
+// here we need to use module because we asign completely new array to the exports
+module.exports = ['apple', 'kiwi'];
+```
