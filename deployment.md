@@ -30,3 +30,9 @@ heroku login
 ```bash
 heroku create some-project
 ```
+
+- And follow the rest of the steps...
+
+Something specific is that you will need simple express server file which will serve the app.
+
+You will also need to specify the run commands in package.json file
