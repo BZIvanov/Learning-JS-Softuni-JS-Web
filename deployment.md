@@ -45,3 +45,17 @@ heroku create some-project
 heroku git:remote -a your-app-name
 git push heroku master
 ```
+
+2.3 Heroku environment variables
+
+- With the following command you can check for already set env variables
+
+```bash
+heroku config
+```
+
+- And this is how we can set env variable
+
+```bash
+heroku config:set KEY=value ANOTHER=some-other-value
+```
