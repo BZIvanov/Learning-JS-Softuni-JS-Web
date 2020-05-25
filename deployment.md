@@ -59,3 +59,25 @@ heroku config
 ```bash
 heroku config:set KEY=value ANOTHER=some-other-value
 ```
+
+# Deployment for the Database
+
+More specificaly this means, where our database will be hosted and not actually deploying it there.
+
+1. Using MongoDB Atlas.
+
+- First create your account
+
+  - You will need to start with selecting cluster region. Choose AWS as cloud provider and go with recommended region.
+  - For cluster tier make sure you have selected M0 which is the free tier
+  - No need to rename the cluster, go with the default name
+
+- Next is to create your cluster user, the first created user will have admin rights
+  - click your cluster name
+  - click CONNECT button
+  - fill the username and password for the new user
+  - whitelist your current IP address by adding it
+  - on the next step choose the option _Connect your application_
+  - on the next step you can see your connection string. It should look like below:
+
+**mongodb+srv://Ivan:<password>@cluster0-jdope.mongodb.net/test?retryWrites=true&w=majority**
