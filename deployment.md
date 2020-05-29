@@ -64,7 +64,7 @@ heroku config:set KEY=value ANOTHER=some-other-value
 
 More specificaly this means, where our database will be hosted and not actually deploying it there.
 
-1. Using MongoDB Atlas.
+1. Using MongoDB Atlas. Of course this solution applies if you want to use MongoDB and not any other database.
 
 - First create your account
 
@@ -81,3 +81,42 @@ More specificaly this means, where our database will be hosted and not actually 
   - on the next step you can see your connection string. It should look like below:
 
 **mongodb+srv://Ivan:<password>@cluster0-jdope.mongodb.net/test?retryWrites=true&w=majority**
+
+2. Using PostgreSQL with Heroku
+
+**2.1 Heroku**
+
+- first you will need Heroku account
+- once logged in click the button **New** => **Create new app**
+- give a name on your app choose a region and click **Create app**
+- you will be redirected to the overview page, on there click **Configure Add-ons** link
+- search for _Heroku Postgres_ on the popup window select the _Free_ version and click **Provision**
+- once created click on the database, new browser tab will be opened with overview of your database
+- you can find your credentials by clicking **Settings** => **View Credentials**
+
+**2.2 pgAdmin**
+
+pgAdmin is GUI tool which will help us to eays work with our database. For example we can examine our tables.
+
+- go to website _pgadmin.org_ click **Download** button and click **Windows**
+- choose the latest version, then choose the _.exe_ file (should be like 100 MBs) to download
+- install the .exe file
+- when you start the pgAdmin new tab in the browser will be opened
+- to have a server to work with, we need to create it. Click **Add New Server**
+- name your server whatever you like in the _General_ tab
+- in the _Connection_ tab is where our credentials are
+- for the _Host name/address_ from Heroku credentials copy paste the _Host_ value
+- port should match in the pgAdmin and Heroku (it matches by default with value 5432)
+- for _Maintenance database_ in pgAdmin use the _Database_ value from Heroku
+- the same way copy paste username and password from Heroku to pgAdmin
+- click the _Save password_ radio button so you dont have to provide the password each time, when connecting
+- _Role_ and _Service_ are not needed, click the **Save** button
+- now on the left panel you should be able to see your server
+- click your database name and click _Databases_, you should see many different which we don't own.
+- to easily find our database copy the name from Heroku and search in the browser
+
+**2.3 Docker**
+
+We need Docker for Prisma
+
+- go to _docker.com_ and click **Get Started**
