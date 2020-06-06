@@ -79,8 +79,10 @@ More specificaly this means, where our database will be hosted and not actually 
   - whitelist your current IP address by adding it
   - on the next step choose the option _Connect your application_
   - on the next step you can see your connection string. It should look like below:
-
-**mongodb+srv://Ivan:<password>@cluster0-jdope.mongodb.net/test?retryWrites=true&w=majority**
+    **mongodb+srv://Ivan:<password>@cluster0-jdope.mongodb.net/test?retryWrites=true&w=majority**
+  - click again _Connect_ button to review again your connection string
+  - you can also install _Atlas_ as GUI
+  - if using Atlas click the connect button in MongoDB and you should be able to find a tab, where you can automatically connect Atlas.
 
 2. Using PostgreSQL with Heroku
 
