@@ -21,3 +21,7 @@
 5. Click the .exe file hyperlink.
 6. Install the exe file, the steps are pretty obvious/default.
 7. That's it, you can now open pgAdmin and start working your GUI tool.
+
+## Using psql
+
+If you want to use the psql command, you need to add it to the Environment variables on Windows. Note that you have to edit the **path** variable by adding new path to it, not to create whole new variable.
