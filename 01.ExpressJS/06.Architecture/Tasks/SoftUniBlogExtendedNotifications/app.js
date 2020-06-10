@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
 const xss = require('xss-clean');
 
 // this will catch errors like undefined variable for example
@@ -14,7 +15,11 @@ const config = require('./config/config');
 const app = express();
 
 // this package will prevent hacker queries. For example instead of data, object query is provided like { email: { $gt: "" } }
+// use this middleware after the middle with which you obtain data, for example express.json
 app.use(mongoSanitize());
+
+// this package will set security headers
+app.use(helmet());
 
 // xss module will replace html symbols from incoming requests data, so no js code can be included with it
 app.use(xss());

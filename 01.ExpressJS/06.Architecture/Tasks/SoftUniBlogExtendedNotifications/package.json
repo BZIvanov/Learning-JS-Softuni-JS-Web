@@ -13,6 +13,7 @@
     "express": "^4.16.4",
     "express-mongo-sanitize": "^2.0.0",
     "express-session": "^1.14.2",
+    "helmet": "^3.22.0",
     "hbs": "~4.0.1",
     "mongoose": "^4.6.6",
     "morgan": "^1.9.1",
