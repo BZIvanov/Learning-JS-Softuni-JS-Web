@@ -25,3 +25,19 @@
 ## Using psql
 
 If you want to use the psql command, you need to add it to the Environment variables on Windows. Note that you have to edit the **path** variable by adding new path to it, not to create whole new variable.
+
+Then you can use the following command
+
+```
+psql -U postgres
+```
+
+This will log you in and allow you to do changes.
+**-U** stands for user
+**postgres** is the name of the default super-user in postrgeSQL
+
+With the below command you can list all the databases you have
+
+```
+\l
+```
