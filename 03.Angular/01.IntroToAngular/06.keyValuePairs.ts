@@ -1,7 +1,3 @@
-interface Bag {
-  [key: number]: any;
-}
-
 class KeyValuePair<T, U> {
   private key: T;
   private val: U;
