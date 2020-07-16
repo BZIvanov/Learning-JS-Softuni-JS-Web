@@ -41,3 +41,15 @@ With the below command you can list all the databases you have
 ```
 \l
 ```
+
+We can select one of our databases in the list by running
+
+```
+\c database-name-here
+```
+
+Will displat table
+
+```
+\dt
+```
