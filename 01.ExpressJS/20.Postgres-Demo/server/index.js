@@ -1,10 +1,8 @@
 const express = require('express');
-const cors = require('cors');
 const pool = require('./db');
 
 const app = express();
 
-app.use(cors);
 app.use(express.json());
 
 app.post('/todos', async (req, res) => {
@@ -15,14 +13,10 @@ app.post('/todos', async (req, res) => {
       [description]
     );
 
-    res.json(newTodo);
+    res.json(newTodo.rows[0]);
   } catch (err) {
     console.log(err.message);
   }
-});
-
-app.get('/', (req, res) => {
-  res.send('Hello world');
 });
 
 app.get('/todos', async (req, res) => {
@@ -35,6 +29,19 @@ app.get('/todos', async (req, res) => {
   }
 });
 
+app.get('/todos/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const todo = await pool.query('SELECT * FROM todo WHERE todo_id = $1', [
+      id,
+    ]);
+
+    res.json(todo.rows[0]);
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
 app.listen(3000, () => {
-  console.log('Server listening on port 5000');
+  console.log('Server listening on port 3000');
 });

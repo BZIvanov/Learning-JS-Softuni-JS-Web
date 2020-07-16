@@ -48,7 +48,7 @@ We can select one of our databases in the list by running
 \c database-name-here
 ```
 
-Will displat table
+Will display the selected table
 
 ```
 \dt
