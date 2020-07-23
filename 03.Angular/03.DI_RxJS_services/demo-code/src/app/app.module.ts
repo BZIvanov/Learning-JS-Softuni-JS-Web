@@ -4,20 +4,11 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { TodoItemComponent } from './todo-item/todo-item.component';
-import { TodoService } from './todo.service';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    TodoItemComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule
-  ],
+  declarations: [AppComponent, TodoItemComponent],
+  imports: [BrowserModule, HttpClientModule],
   providers: [],
-  bootstrap: [
-    AppComponent
-  ]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

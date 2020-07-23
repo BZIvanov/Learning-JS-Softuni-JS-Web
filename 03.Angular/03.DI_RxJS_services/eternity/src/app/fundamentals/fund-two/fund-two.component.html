@@ -1,26 +1,33 @@
 <div>
-    <h3>*ngFor example</h3>
-    <div>
-        <input #myInput type="text">
-        <button (click)="addUser(myInput.value); myInput.value='';">Add user</button>
-    </div>
-    <ul>
-        <li *ngFor="let user of users">{{ user }}</li>
-    </ul>
+  <h3>*ngFor example</h3>
+  <div>
+    <input #myInput type="text" />
+    <button (click)="addUser(myInput.value); myInput.value = ''">
+      Add user
+    </button>
+  </div>
+  <ul>
+    <li *ngFor="let user of users">{{ user }}</li>
+  </ul>
 </div>
-<hr>
+<hr />
 
 <div>
-    <h3>ngClass example</h3>
-    <ul>
-        <!-- ngClass takes object where the key is css class and the value is boolean. If boolean is true the class is applied -->
-        <li *ngFor="let position of positions" [ngClass]="{ 'customClass': position.isChief }">{{ position.name }}</li>
-    </ul>
+  <h3>ngClass example</h3>
+  <ul>
+    <!-- ngClass takes object where the key is css class and the value is boolean. If boolean is true the class is applied -->
+    <li
+      *ngFor="let position of positions"
+      [ngClass]="{ customClass: position.isChief }"
+    >
+      {{ position.name }}
+    </li>
+  </ul>
 </div>
-<hr>
+<hr />
 
 <div>
-    <h3>*ngIf example</h3>
-    <p *ngIf="isCool">I am displayed because ngIf is true</p>
+  <h3>*ngIf example</h3>
+  <p *ngIf="isCool">I am displayed because ngIf is true</p>
 </div>
-<hr>
+<hr />

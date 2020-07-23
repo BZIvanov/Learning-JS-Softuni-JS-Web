@@ -8,10 +8,8 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'softuni-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-
   @ViewChild('filterInput') filterInput: ElementRef;
 
   todos: ITodo[];
@@ -32,7 +30,6 @@ export class AppComponent implements AfterViewInit {
     //   tap(value => console.log(value)),
     //   share()
     // );
-
     // stream$.subscribe(value => console.log('1', value));
     // stream$.subscribe(value => console.log('2', value));
   }

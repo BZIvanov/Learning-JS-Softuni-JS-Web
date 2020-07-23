@@ -1,12 +1,17 @@
 <ng-template #todoList>
   <div>
-    <input #nameInput type="text">
-    <button (click)="addTodo(nameInput.value, $event); nameInput.value = '';">Add</button>
+    <input #nameInput type="text" />
+    <button (click)="addTodo(nameInput.value, $event); nameInput.value = ''">
+      Add
+    </button>
   </div>
   <div id="todo-list">
-    <input type="text" #filterInput>
-    <softuni-todo-item *ngFor="let todo of todos; let i = index;" [todo]="todo"
-      (toggleEvent)="toggleCompleted(i, $event)">
+    <input type="text" #filterInput />
+    <softuni-todo-item
+      *ngFor="let todo of todos; let i = index"
+      [todo]="todo"
+      (toggleEvent)="toggleCompleted(i, $event)"
+    >
     </softuni-todo-item>
   </div>
 </ng-template>
@@ -15,4 +20,4 @@
   Loading...
 </ng-template>
 
-<ng-container *ngIf="todos then todoList; else loading;"></ng-container>
+<ng-container *ngIf="todos; then todoList; else loading"></ng-container>
