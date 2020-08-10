@@ -1,7 +1,7 @@
 import React from 'react';
 import './HouseDetails.css';
 
-const HouseDetails = props => (
+const HouseDetails = (props) => (
   <div className="HouseDetails">
     <h2>{props.type}</h2>
     <div className="image">

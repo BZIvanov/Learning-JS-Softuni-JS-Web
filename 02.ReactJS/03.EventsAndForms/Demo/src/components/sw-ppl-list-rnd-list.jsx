@@ -13,7 +13,7 @@ class StarWarsPeopleListAndRandomList extends React.Component {
     this.setState((prevState) => ({
       page: prevState.page + 1,
     }));
-  }
+  };
 
   render() {
     const { randomList, page, isLoading } = this.state;
@@ -35,7 +35,6 @@ class StarWarsPeopleListAndRandomList extends React.Component {
     // this.setState((prevState) => ({
     //   randomList: [...prevState.randomList, 5]
     // }));
-
     // setTimeout(() => {
     //     this.setState({
     //         isLoading: true,

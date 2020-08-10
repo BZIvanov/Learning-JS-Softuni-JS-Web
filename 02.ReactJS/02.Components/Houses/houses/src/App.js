@@ -4,7 +4,6 @@ import Street from './Street/Street';
 import House from './House/House';
 import HouseDetails from './HouseDetails/HouseDetails';
 
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -12,17 +11,17 @@ class App extends Component {
       streets: [],
       selectedStreetIdx: 0,
       selectedHouseIdx: 0,
-      hasFetched: false
-    }
+      hasFetched: false,
+    };
   }
 
   componentWillMount() {
     fetch('http://localhost:9999/feed/street/all')
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         this.setState({
           streets: data.streets,
-          hasFetched: true
+          hasFetched: true,
         });
       });
   }
@@ -32,19 +31,21 @@ class App extends Component {
   }
 
   getSelectedHouse() {
-    return this.state.streets[this.state.selectedStreetIdx].homes[this.state.selectedHouseIdx];
+    return this.state.streets[this.state.selectedStreetIdx].homes[
+      this.state.selectedHouseIdx
+    ];
   }
 
   streetHoverEvent(idx) {
     this.setState({
-      selectedStreetIdx: idx
+      selectedStreetIdx: idx,
     });
   }
 
   houseHoverEvent(idx) {
     this.setState({
-      selectedHouseIdx: idx
-    })
+      selectedHouseIdx: idx,
+    });
   }
 
   render() {
@@ -56,36 +57,47 @@ class App extends Component {
       <div className="App">
         <div className="streets">
           <h2>Streets</h2>
-          {this.state.streets.length > 0 ? this.state.streets.map((street, idx) => {
-            return (<Street location={street.location} 
-              key={idx} 
-              id={idx} 
-              streetHoverEvent={this.streetHoverEvent.bind(this)} />)
-          }) : null}
+          {this.state.streets.length > 0
+            ? this.state.streets.map((street, idx) => {
+                return (
+                  <Street
+                    location={street.location}
+                    key={idx}
+                    id={idx}
+                    streetHoverEvent={this.streetHoverEvent.bind(this)}
+                  />
+                );
+              })
+            : null}
         </div>
 
         <div className="houses">
           <h2>Houses</h2>
-          {this.state.streets.length > 0 ? this.getSelectedStreet().map((home, idx) => (
-          <House type={home.type} 
-              description={home.description} 
-              id={idx} 
-              imageUrl={home.imageUrl} 
-              price={home.price} 
-              key={idx}
-              houseHoverEvent={this.houseHoverEvent.bind(this)} />)
-          ) : null}
+          {this.state.streets.length > 0
+            ? this.getSelectedStreet().map((home, idx) => (
+                <House
+                  type={home.type}
+                  description={home.description}
+                  id={idx}
+                  imageUrl={home.imageUrl}
+                  price={home.price}
+                  key={idx}
+                  houseHoverEvent={this.houseHoverEvent.bind(this)}
+                />
+              ))
+            : null}
         </div>
 
         <div className="houses">
-          {this.state.streets.length > 0 ? <HouseDetails 
-            type={this.getSelectedHouse().type}
-            description={this.getSelectedHouse().description}
-            imageUrl={this.getSelectedHouse().imageUrl}
-            price={this.getSelectedHouse().price}
-            key={this.state.selectedHouseIdx} />
-            : null
-          }
+          {this.state.streets.length > 0 ? (
+            <HouseDetails
+              type={this.getSelectedHouse().type}
+              description={this.getSelectedHouse().description}
+              imageUrl={this.getSelectedHouse().imageUrl}
+              price={this.getSelectedHouse().price}
+              key={this.state.selectedHouseIdx}
+            />
+          ) : null}
         </div>
       </div>
     );

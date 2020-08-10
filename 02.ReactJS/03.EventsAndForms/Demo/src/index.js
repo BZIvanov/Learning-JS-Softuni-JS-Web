@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const camelCased = (myString) => (
-  myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
-);
+const camelCased = (myString) =>
+  myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 
 class RegistrationForm extends React.Component {
   state = {
@@ -11,53 +10,45 @@ class RegistrationForm extends React.Component {
     firstName: '',
     lastName: '',
     password: '',
-    errorMessages: []
+    errorMessages: [],
   };
 
   handleRegister = (event) => {
     event.preventDefault();
     console.dir(this.state);
-  }
+  };
 
   handleFormElementChange = (event) => {
     const { value, id } = event.target;
     const parsedId = camelCased(id);
 
     this.setState({
-      [parsedId]: value
+      [parsedId]: value,
     });
-  }
+  };
 
   checkValidity = (event) => {
     const { target } = event;
 
     if (!target.checkValidity()) {
       this.setState(({ errorMessages }) => ({
-        errorMessages: [
-          ...errorMessages,
-          target.validationMessage,
-        ]
+        errorMessages: [...errorMessages, target.validationMessage],
       }));
     }
-  }
+  };
 
   render() {
-    const {
-      email,
-      firstName,
-      lastName,
-      password,
-      errorMessages,
-    } = this.state;
+    const { email, firstName, lastName, password, errorMessages } = this.state;
 
     return (
       <form onSubmit={this.handleRegister}>
-        {errorMessages.length ?
-            <ul>
-                {errorMessages.map(message => <li>{message}</li>)}
-            </ul>
-          : null
-        }
+        {errorMessages.length ? (
+          <ul>
+            {errorMessages.map((message) => (
+              <li>{message}</li>
+            ))}
+          </ul>
+        ) : null}
         <label htmlFor="email">Email:</label>
         <input
           type="email"

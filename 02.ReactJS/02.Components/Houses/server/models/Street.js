@@ -4,12 +4,14 @@ const Schema = mongoose.Schema;
 const streetSchema = new Schema({
   location: {
     type: String,
-    required: true
+    required: true,
   },
-  homes: [{
-    type: Schema.Types.ObjectId,
-    ref: 'House'
-  }]
+  homes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'House',
+    },
+  ],
 });
 
 module.exports = mongoose.model('Street', streetSchema);

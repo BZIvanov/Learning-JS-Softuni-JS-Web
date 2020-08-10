@@ -2,8 +2,7 @@
 
 body {
   background-color: rgb(174, 210, 250);
-  font-family: 'Ubuntu',
-  serif;
+  font-family: 'Ubuntu', serif;
 }
 
 .App {
@@ -30,7 +29,6 @@ h2 {
   width: 320px;
   height: 250px;
   overflow: hidden;
-
 }
 
 img {

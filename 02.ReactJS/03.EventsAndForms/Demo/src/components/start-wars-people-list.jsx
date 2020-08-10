@@ -1,7 +1,6 @@
 import React from 'react';
 import isEqual from 'react-fast-compare';
 
-
 class StarWarsPeopleList extends React.Component {
   state = {
     people: [],
@@ -14,7 +13,7 @@ class StarWarsPeopleList extends React.Component {
   //         JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
   //         Object.keys(nextProps).length !== Object.keys(this.props).length
   //     );
-      
+
   //     const hasNextStateChanged = JSON.stringify(nextState) !== JSON.stringify(this.state);
 
   //     return (haveNextPropsChanged || hasNextStateChanged);
@@ -30,19 +29,21 @@ class StarWarsPeopleList extends React.Component {
 
   getStarWarsPeople = (page) => {
     return fetch(`https://swapi.co/api/people?page=${page}`)
-      .then(res => res.json())
-      .then(data => data.results)
-      .then(people => this.setState((prevState) => ({
-        people: [ ...prevState.people, ...people ],
-        isLoading: false,
-      })))
-      .catch(error => {
+      .then((res) => res.json())
+      .then((data) => data.results)
+      .then((people) =>
+        this.setState((prevState) => ({
+          people: [...prevState.people, ...people],
+          isLoading: false,
+        }))
+      )
+      .catch((error) => {
         console.error(error);
         this.setState({
-          error: true
+          error: true,
         });
       });
-  }
+  };
 
   render() {
     const { people, isLoading, error } = this.state;
@@ -52,24 +53,24 @@ class StarWarsPeopleList extends React.Component {
     }
 
     if (isLoading) {
-      return <span>Loading ...</span>
+      return <span>Loading ...</span>;
     }
 
     return (
       <ul>
-        {people.map(person => (
-            <li>
-              Name: {person.name}
-              <br />
-              Gender: {person.gender}
-            </li>
-          ))}
+        {people.map((person) => (
+          <li>
+            Name: {person.name}
+            <br />
+            Gender: {person.gender}
+          </li>
+        ))}
       </ul>
     );
   }
-  
+
   componentDidMount() {
-    const { page } = this.props
+    const { page } = this.props;
     this.getStarWarsPeople(page);
   }
 

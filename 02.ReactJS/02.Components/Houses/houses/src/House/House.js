@@ -8,6 +8,6 @@ const House = function (props) {
       <img alt="house" src={props.imageUrl}></img>
     </div>
   );
-}
+};
 
 export default House;
