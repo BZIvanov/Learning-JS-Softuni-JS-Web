@@ -3,9 +3,4 @@ const staticHandler = require('./static');
 const movieHandler = require('./movie');
 const errorHandler = require('./error');
 
-module.exports = [ 
-  homeHandler,
-  staticHandler,
-  movieHandler,
-  errorHandler
-];
+module.exports = [homeHandler, staticHandler, movieHandler, errorHandler];
