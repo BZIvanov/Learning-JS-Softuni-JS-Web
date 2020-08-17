@@ -7,8 +7,7 @@ body {
 }
 
 body {
-  font-family: 'Raleway',
-    sans-serif;
+  font-family: 'Raleway', sans-serif;
   margin: 0;
   font-weight: bold;
 }
@@ -176,7 +175,6 @@ Layout
   border: 2px solid lightgrey;
   font-size: inherit;
 }
-
 
 .input-field:focus {
   outline: none;
@@ -371,9 +369,9 @@ body div.notifyYou {
 }
 @keyframes cssAnimation {
   to {
-      padding: 0;
-      width: 0;
-      height: 0;
-      overflow: hidden;
+    padding: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
   }
 }

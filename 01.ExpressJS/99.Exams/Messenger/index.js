@@ -6,7 +6,9 @@ const app = require('express')();
 require('./config/express')(app);
 require('./config/routes')(app);
 require('./config/passport')();
-app.listen(config.port, () => console.log(`Server listening on port ${config.port}...`));
+app.listen(config.port, () =>
+  console.log(`Server listening on port ${config.port}...`)
+);
 
 /* 
 For debugging in the terminal write "npm run debug"

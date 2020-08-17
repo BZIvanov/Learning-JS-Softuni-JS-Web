@@ -2,44 +2,44 @@
 <html lang="en">
 
 <head>
-    <title>Messanger</title>
-    <link href="/css/site.css" type="text/css" rel="stylesheet" />
+  <title>Messanger</title>
+  <link href="/css/site.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body>
-   <div class="nav">
-        <ul class="menu">
-            <li>
-                <a href="/">Home</a>
-            </li>
-            
-            {{#if currentUser}}
-                <li class="right">
-                    <a href="/users/logout">Logout</a>
-                </li>
-                <li class="right">Welcome, {{currentUser}}!</li>
-            {{else}}
-                <li class="right">
-                    <a href="/users/register">Register</a>
-                </li>
-                <li class="right">
-                    <a href="/users/login">Login</a>
-                </li>
-            {{/if}}
-        </ul>
-    </div>
+  <div class="nav">
+    <ul class="menu">
+      <li>
+        <a href="/">Home</a>
+      </li>
 
-    <main>
-        {{#if notifyYou}}
-        <div class="notifyYou">{{notifyYou}}</div> 
-        {{/if}} 
+      {{#if currentUser}}
+      <li class="right">
+        <a href="/users/logout">Logout</a>
+      </li>
+      <li class="right">Welcome, {{currentUser}}!</li>
+      {{else}}
+      <li class="right">
+        <a href="/users/register">Register</a>
+      </li>
+      <li class="right">
+        <a href="/users/login">Login</a>
+      </li>
+      {{/if}}
+    </ul>
+  </div>
 
-        {{#if globalError}}
-        <span>{{globalError}}</span> 
-        {{/if}} 
-        
-        {{{body}}}
-    </main>
+  <main>
+    {{#if notifyYou}}
+    <div class="notifyYou">{{notifyYou}}</div>
+    {{/if}}
+
+    {{#if globalError}}
+    <span>{{globalError}}</span>
+    {{/if}}
+
+    {{{body}}}
+  </main>
 </body>
 
 </html>

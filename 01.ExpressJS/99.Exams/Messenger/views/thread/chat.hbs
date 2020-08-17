@@ -1,29 +1,29 @@
 <h1>Chatroom with {{otherUserUsername}}</h1>
 
 <form method="POST" class="chat-form" action="/block/{{otherUserUsername}}">
-    <button class="btn btn-danger" type="submit">Block</button>
+  <button class="btn btn-danger" type="submit">Block</button>
 </form>
 
 <div class="chat-wrapper">
-    <div id="message-wrapper">
-        {{#each messages}}
-            {{#if isImage}}
-                <div class="message-row">
-                    <img class="thread-message {{direction}}" src="{{content}}">
-                </div>
-            {{else}}
-                <div class="message-row">
-                    <span class="thread-message {{direction}}">{{content}}</span>
-                </div>
-            {{/if}}
-        {{else}}
-            <p>You haven't chatted yet. DO IT now!!!</p>
-        {{/each}}
+  <div id="message-wrapper">
+    {{#each messages}}
+    {{#if isImage}}
+    <div class="message-row">
+      <img class="thread-message {{direction}}" src="{{content}}">
     </div>
+    {{else}}
+    <div class="message-row">
+      <span class="thread-message {{direction}}">{{content}}</span>
+    </div>
+    {{/if}}
+    {{else}}
+    <p>You haven't chatted yet. DO IT now!!!</p>
+    {{/each}}
+  </div>
 
-    <form method="POST" class="chat-form" action="/message/send">
-        <textarea rows="5" name="message" placeholder="message"></textarea>
-        <input value="{{targetThreadId}}" name="threadId" hidden />
-        <button class="btn btn-primary send" type="submit">Send</button>
-    </form>
+  <form method="POST" class="chat-form" action="/message/send">
+    <textarea rows="5" name="message" placeholder="message"></textarea>
+    <input value="{{targetThreadId}}" name="threadId" hidden />
+    <button class="btn btn-primary send" type="submit">Send</button>
+  </form>
 </div>
