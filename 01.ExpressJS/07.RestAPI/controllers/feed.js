@@ -6,9 +6,9 @@ function validatePost(req, res) {
   // errors here are from the middleware validators in routes folder files. The middleware validators with square brackets
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-     res.status(422).json({
+    res.status(422).json({
       message: 'Validation failed, entered data is incorrect',
-      errors: errors.array()
+      errors: errors.array(),
     });
 
     return false;
@@ -22,9 +22,7 @@ module.exports = {
     // Retrieve all posts in JSON format
     Post.find()
       .then((posts) => {
-        res
-          .status(200)
-          .json({ message: 'Fetched posts successfully.', posts });
+        res.status(200).json({ message: 'Fetched posts successfully.', posts });
       })
       .catch((error) => {
         if (!error.statusCode) {
@@ -45,7 +43,8 @@ module.exports = {
       const post = new Post({ title, content, creator: req.userId });
       let creator;
 
-      post.save()
+      post
+        .save()
         .then(() => {
           return User.findById(req.userId);
         })
@@ -55,19 +54,17 @@ module.exports = {
           return user.save();
         })
         .then(() => {
-          res
-            .status(201)
-            .json({
-              message: 'Post created successfully!',
-              post: post,
-              creator: { userId: req.userId, name: creator.name }
-            })
+          res.status(201).json({
+            message: 'Post created successfully!',
+            post: post,
+            creator: { userId: req.userId, name: creator.name },
+          });
         })
         .catch((error) => {
           if (!error.statusCode) {
             error.statusCode = 500;
           }
-  
+
           next(error);
         });
     }
@@ -101,10 +98,9 @@ module.exports = {
         return user.save();
       })
       .then(() => {
-        res.status(200)
-        .json({
-          message: 'Post deleted successfully!'
-        })
+        res.status(200).json({
+          message: 'Post deleted successfully!',
+        });
       })
       .catch((error) => {
         // if the error thrown from if's above is server error we will go directly here without going throug if's so we need to set status code here
@@ -120,9 +116,7 @@ module.exports = {
 
     Post.findById(postId)
       .then((post) => {
-        res
-          .status(200)
-          .json({ message: 'Post fetched.', post })
+        res.status(200).json({ message: 'Post fetched.', post });
       })
       .catch((error) => {
         if (!error.statusCode) {
@@ -162,17 +156,17 @@ module.exports = {
           if (p) {
             res.status(200).json({
               message: 'Post updated!',
-              post: p
-            })
+              post: p,
+            });
           }
         })
         .catch((error) => {
           if (!error.statusCode) {
             error.statusCode = 500;
           }
-  
+
           next(error);
         });
     }
-  }
-}
+  },
+};
