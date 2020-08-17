@@ -3,18 +3,19 @@ const { body } = require('express-validator/check');
 const authController = require('../controllers/auth');
 const User = require('../models/User');
 
-router.post('/signup', 
+router.post(
+  '/signup',
   [
     // TODO: Add normalize email and check
     body('email')
       .isEmail()
       .withMessage('Please enter a valid email.')
       .custom((value, { req }) => {
-        return User.findOne({ email: value }).then(userDoc => {
+        return User.findOne({ email: value }).then((userDoc) => {
           if (userDoc) {
             return Promise.reject('E-Mail address already exists!');
           }
-        })
+        });
       }),
     body('password')
       .trim()
@@ -24,9 +25,10 @@ router.post('/signup',
       .trim()
       .not()
       .isEmpty()
-      .withMessage('Please enter a valid username.')
-  ]
-, authController.signUp);
+      .withMessage('Please enter a valid username.'),
+  ],
+  authController.signUp
+);
 router.post('/signin', authController.signIn);
 
 module.exports = router;
