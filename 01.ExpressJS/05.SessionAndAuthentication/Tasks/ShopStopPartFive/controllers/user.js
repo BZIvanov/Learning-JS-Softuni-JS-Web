@@ -6,19 +6,21 @@ module.exports.registerGet = (req, res) => {
 };
 
 module.exports.registerPost = (req, res) => {
-  let user = req.body;
+  const user = req.body;
 
   if (user.password && user.password !== user.confirmedPassword) {
-    let error = 'Passwords do not match';
-    res.render('user/register', { error });
+    res.render('user/register', { error: 'Passwords do not match' });
     return;
   }
 
-  let salt = encryption.generateSalt();
+  const salt = encryption.generateSalt();
   user.salt = salt;
 
   if (user.password) {
-    let hashedPassword = encryption.generateHashedPassword(salt, user.password);
+    const hashedPassword = encryption.generateHashedPassword(
+      salt,
+      user.password
+    );
     user.password = hashedPassword;
   }
 

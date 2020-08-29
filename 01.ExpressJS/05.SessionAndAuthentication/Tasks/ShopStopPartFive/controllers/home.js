@@ -1,7 +1,7 @@
 const Product = require('../models/Product');
 
 module.exports.index = (req, res) => {
-  let queryData = req.query;
+  const queryData = req.query;
 
   Product.find()
     .populate('category')
@@ -12,7 +12,7 @@ module.exports.index = (req, res) => {
         );
       }
 
-      let data = {
+      const data = {
         products,
       };
       if (req.query.error) {
