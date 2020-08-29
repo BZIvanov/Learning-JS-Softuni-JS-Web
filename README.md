@@ -17,7 +17,7 @@ npm install nodemon --save-dev
 
 Nodemon is a utility that will monitor for any changes in your source and automatically restart your server.
 
-Just use nodemon instead of node to run your code, and now your process will automatically restart when your code changes. To install from your terminal run:
+Just use _nodemon_ instead of _node_ in your scripts in the package.json file to run your code, and now your process will automatically restart when your code changes. To install from your terminal run:
 
 ```javascript
 npm install nodemon --save-dev
