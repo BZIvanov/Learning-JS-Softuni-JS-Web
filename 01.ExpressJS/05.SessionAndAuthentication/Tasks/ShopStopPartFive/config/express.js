@@ -1,10 +1,14 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const Handlebars = require('handlebars');
 const handlebars = require('express-handlebars');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
+const {
+  allowInsecurePrototypeAccess,
+} = require('@handlebars/allow-prototype-access');
 
 module.exports = (app, config) => {
   app.engine(
@@ -12,6 +16,7 @@ module.exports = (app, config) => {
     handlebars({
       defaultLayout: 'layout',
       extname: '.hbs',
+      handlebars: allowInsecurePrototypeAccess(Handlebars),
     })
   );
   app.set('view engine', '.hbs');

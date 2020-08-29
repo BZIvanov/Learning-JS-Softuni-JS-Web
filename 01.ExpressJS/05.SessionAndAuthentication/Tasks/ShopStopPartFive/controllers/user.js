@@ -6,7 +6,7 @@ module.exports.registerGet = (req, res) => {
 };
 
 module.exports.registerPost = (req, res) => {
-  const user = req.body;
+  const user = { ...req.body };
 
   if (user.password && user.password !== user.confirmedPassword) {
     res.render('user/register', { error: 'Passwords do not match' });
@@ -45,10 +45,10 @@ module.exports.loginGet = (req, res) => {
 };
 
 module.exports.loginPost = (req, res) => {
-  let userToLogin = req.body;
+  const { username, password } = req.body;
 
-  User.findOne({ username: userToLogin.username }).then((user) => {
-    if (!user || !user.authenticate(userToLogin.password)) {
+  User.findOne({ username }).then((user) => {
+    if (!user || !user.authenticate(password)) {
       res.render('user/login', { error: 'Invalid credentials!' });
     } else {
       req.logIn(user, (error, user) => {

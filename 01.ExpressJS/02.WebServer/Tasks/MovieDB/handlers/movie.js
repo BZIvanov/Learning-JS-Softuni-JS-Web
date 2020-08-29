@@ -120,8 +120,8 @@ module.exports = (req, res) => {
     req.pathname.startsWith('/movies/details/') &&
     req.method === 'GET'
   ) {
-    let index = req.pathname.substr(req.pathname.lastIndexOf('/') + 1);
-    let movie = db[index];
+    const index = req.pathname.substr(req.pathname.lastIndexOf('/') + 1);
+    const movie = db[index];
 
     fs.readFile('./views/details.html', (err, data) => {
       if (err) {
@@ -147,14 +147,14 @@ module.exports = (req, res) => {
       res.end();
     });
   } else if (req.pathname === '/status' && req.method === 'GET') {
-    let totalMovies = db.length;
+    const totalMovies = db.length;
     fs.readFile('./views/status.html', (err, data) => {
       if (err) {
         console.log(err);
         return;
       }
 
-      let replacement = `We have ${totalMovies} movies in total in our database`;
+      const replacement = `We have ${totalMovies} movies in total in our database`;
       data = data.toString().replace('{{replaceMe}}', replacement);
 
       res.writeHead(200, {

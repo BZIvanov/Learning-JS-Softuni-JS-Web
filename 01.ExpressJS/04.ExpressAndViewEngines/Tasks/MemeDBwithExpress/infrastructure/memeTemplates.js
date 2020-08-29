@@ -1,13 +1,12 @@
 module.exports = {
-	viewAll: (id, url) => `
+  viewAll: (id, url) => `
       <div class="meme">
           <a href="/memes/getDetails?id=${id}">
               <img class="memePoster" src="${url}"/> 
           </a>         
       </div>`,
-	genreOption: (id, title) => 
-		`<option value="${id}">${title}</option>`,
-	details: (url, title, description, id) => `
+  genreOption: (id, title) => `<option value="${id}">${title}</option>`,
+  details: (url, title, description, id) => `
       <div class="content">
           <img src="${url}" alt=""/>
           <h3>Title  ${title}</h3>
@@ -19,9 +18,9 @@ module.exports = {
               <span id="delete" data-meme-id=${id}>Delete</span>
           </button>
       </div>`,
-	detailsLink: (id, url) => `
+  detailsLink: (id, url) => `
       <div class="meme">
           <a href="/memes/getDetails?id=${id}">
           <img class="memePoster" src="${url}"/>          
-      </div>`
+      </div>`,
 };

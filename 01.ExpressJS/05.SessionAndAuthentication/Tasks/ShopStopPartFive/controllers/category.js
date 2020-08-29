@@ -23,6 +23,6 @@ module.exports.productByCategory = (req, res) => {
         res.sendStatus(404);
         return;
       }
-      res.render('category/products', { category: category });
+      res.render('category/products', { category });
     });
 };

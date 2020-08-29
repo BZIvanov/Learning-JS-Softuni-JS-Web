@@ -1,14 +1,15 @@
+const fs = require('fs');
 const Product = require('../models/Product');
 const Category = require('../models/Category');
 
 module.exports.addGet = (req, res) => {
   Category.find().then((categories) => {
-    res.render('product/add', { categories: categories });
+    res.render('product/add', { categories });
   });
 };
 
 module.exports.addPost = async (req, res) => {
-  const productObj = req.body;
+  const productObj = { ...req.body };
   // with the req.file we can see info about the image we are uploading
   productObj.image = '\\' + req.file.path;
   productObj.creator = req.user._id;
@@ -33,8 +34,8 @@ module.exports.editGet = (req, res) => {
     ) {
       Category.find().then((categories) => {
         res.render('product/edit', {
-          product: product,
-          categories: categories,
+          product,
+          categories,
         });
       });
     } else {
@@ -49,7 +50,7 @@ module.exports.editGet = (req, res) => {
 };
 
 module.exports.editPost = async (req, res) => {
-  const editedProduct = req.body;
+  const editedProduct = { ...req.body };
 
   const product = await Product.findById(req.params.id);
   if (!product) {
@@ -94,6 +95,12 @@ module.exports.editPost = async (req, res) => {
           });
         });
       });
+    } else {
+      product.save().then(() => {
+        res.redirect(
+          `/?success=${encodeURIComponent('Product was edited successfully!')}`
+        );
+      });
     }
   } else {
     product.save().then(() => {
@@ -117,7 +124,7 @@ module.exports.deleteGet = (req, res) => {
         req.user.roles.indexOf('Admin') >= 0
       ) {
         res.render('product/delete', {
-          product: product,
+          product,
         });
       } else {
         res.redirect(
@@ -137,19 +144,17 @@ module.exports.deletePost = (req, res) => {
   const id = req.params.id;
   const creator = req.user._id;
 
-  Product.findByIdAndRemove({ _id: id, creator }).then((removedProduct) => {
-    Category.update(
+  Product.findOneAndDelete({ _id: id, creator }).then((removedProduct) => {
+    Category.updateOne(
       { _id: removedProduct.category },
       { $pull: { products: removedProduct._id } }
     )
-      .then((result) => {
-        console.log(result);
-
+      .then(() => {
         const imageName = removedProduct.image.split('\\').pop();
 
         fs.unlink(`./content/images/${imageName}`, (err) => {
           if (err) {
-            console.log(err);
+            console.log('Delete error', err);
             res.sendStatus(404);
             return;
           }
@@ -174,7 +179,8 @@ module.exports.deletePost = (req, res) => {
           });
         });
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         res.redirect(`/?error=${encodeURIComponent('Product was not found!')}`);
       });
   });
@@ -196,7 +202,7 @@ module.exports.buyGet = (req, res) => {
       }
 
       res.render('product/buy', {
-        product: product,
+        product,
       });
     })
     .catch(() => {

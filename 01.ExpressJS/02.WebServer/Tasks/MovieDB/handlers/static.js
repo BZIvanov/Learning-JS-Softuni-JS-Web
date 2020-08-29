@@ -9,7 +9,7 @@ const allowedStaticFiles = {
   ico: 'image/x-icon',
 };
 
-let faviconHandler = (req, res) => {
+const faviconHandler = (req, res) => {
   fs.readFile('./public/images/favicon.ico', (err, data) => {
     if (err) {
       console.log(err);
@@ -24,7 +24,7 @@ let faviconHandler = (req, res) => {
   });
 };
 
-let resourceHandler = (req, res) => {
+const resourceHandler = (req, res) => {
   fs.readFile('.' + req.pathname, (err, data) => {
     if (err) {
       console.log(err);
@@ -39,7 +39,7 @@ let resourceHandler = (req, res) => {
   });
 };
 
-let getContentType = (url) => {
+const getContentType = (url) => {
   let ext = url.split('.').pop();
   if (typeof allowedStaticFiles[ext] !== 'undefined') {
     return allowedStaticFiles[ext];
@@ -49,7 +49,7 @@ let getContentType = (url) => {
 };
 
 module.exports = (req, res) => {
-  let isAllowedFileType = getContentType(req.pathname) !== false;
+  const isAllowedFileType = getContentType(req.pathname) !== false;
   if (req.pathname === '/favicon.ico' && req.method === 'GET') {
     faviconHandler(req, res);
   } else if (

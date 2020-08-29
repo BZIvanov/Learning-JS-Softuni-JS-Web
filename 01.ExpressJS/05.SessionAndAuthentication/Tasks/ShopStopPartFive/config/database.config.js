@@ -4,6 +4,7 @@ module.exports = (config) => {
   mongoose.connect(config.connectionString, {
     useNewUrlParser: true,
     useCreateIndex: true,
+    useUnifiedTopology: true,
   });
 
   const database = mongoose.connection;
