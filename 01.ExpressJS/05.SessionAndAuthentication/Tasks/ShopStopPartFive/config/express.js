@@ -9,6 +9,10 @@ const passport = require('passport');
 const {
   allowInsecurePrototypeAccess,
 } = require('@handlebars/allow-prototype-access');
+const homeRoutes = require('../routes/home');
+const userRoutes = require('../routes/user');
+const productRoutes = require('../routes/product');
+const categoryRoutes = require('../routes/category');
 
 module.exports = (app, config) => {
   app.engine(
@@ -45,4 +49,9 @@ module.exports = (app, config) => {
     }
     next();
   }, express.static(path.normalize(path.join(config.rootPath, 'content'))));
+
+  app.use('/', homeRoutes);
+  app.use('/user', userRoutes);
+  app.use('/product', productRoutes);
+  app.use('/category', categoryRoutes);
 };
