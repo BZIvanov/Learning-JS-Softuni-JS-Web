@@ -1,5 +1,5 @@
-let Tag = require('../models/tagSchema');
 const fs = require('fs');
+const Tag = require('../models/tagSchema');
 
 module.exports = (req, res) => {
   if (req.pathname === '/' && req.method === 'GET') {
@@ -9,20 +9,20 @@ module.exports = (req, res) => {
         return;
       }
       res.writeHead(200, {
-        'Content-Type': 'text/html'
+        'Content-Type': 'text/html',
       });
+
       let dispalyTags = '';
 
-      Tag.find({}).then(tags => {
-        for (let tag of tags) {
+      Tag.find({}).then((tags) => {
+        for (const tag of tags) {
           dispalyTags += `<div class="tag" id="${tag._id}">${tag.name}</div>`;
         }
-
 
         data = data
           .toString()
           .replace('<div class="replaceMe"></div>', dispalyTags);
-        
+
         res.end(data);
       });
     });

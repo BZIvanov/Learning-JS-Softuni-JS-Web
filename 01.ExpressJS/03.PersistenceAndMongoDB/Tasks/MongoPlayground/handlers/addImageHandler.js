@@ -1,21 +1,19 @@
-const mongoose = require('mongoose');
 const formidable = require('formidable');
-const Image = require('../models/imageSchema');;
-let ObjectId = mongoose.ObjectId;
+const Image = require('../models/imageSchema');
 
 function addImage(req, res) {
-  let form = formidable.IncomingForm();
+  const form = formidable.IncomingForm();
 
   form.parse(req, (err, fields, files) => {
     if (err) {
       console.log(err);
       return;
     }
-    let imageUrl = fields.imageUrl;
-    let description = fields.description;
-    let title = fields.imageTitle;
+    const imageUrl = fields.imageUrl;
+    const description = fields.description;
+    const title = fields.imageTitle;
 
-    let tags = fields.tagsID.split(',').reduce((arr, curVal) => {
+    const tags = fields.tagsID.split(',').reduce((arr, curVal) => {
       if (arr.includes(curVal) || curVal.length === 0) {
         return arr;
       } else {
@@ -24,48 +22,43 @@ function addImage(req, res) {
       }
     }, []);
 
-
-    Image
-      .create({
-        url: imageUrl,
-        description: description,
-        title: title,
-        tags: tags
-      })
+    Image.create({
+      url: imageUrl,
+      description,
+      title,
+      tags,
+    })
       .then(() => {
         res.writeHead(302, {
-          location: '/'
+          location: '/',
         });
         res.end();
       })
       .catch((err) => {
         console.log(err.errors);
       });
-
   });
 }
 
 function deleteImg(req, res) {
-  let removeId = req.pathquery.id;
+  const removeId = req.pathquery.id;
 
-
-  Image.remove({ _id: `${removeId}` }, function (err) {
+  Image.deleteOne({ _id: removeId }, function (err) {
     if (err) {
       console.log(err);
       return;
     }
-  }).then(() => {
-    res.writeHead(302, {
-      location: '/search'
+  })
+    .then(() => {
+      res.writeHead(302, {
+        location: '/search',
+      });
+      res.end();
+    })
+    .catch((err) => {
+      console.log(err.errors);
     });
-    res.end();
-  }).catch((err) => {
-    console.log(err.errors);
-  });
-
-
 }
-
 
 module.exports = (req, res) => {
   if (req.pathname === '/addImage' && req.method === 'POST') {
@@ -76,4 +69,3 @@ module.exports = (req, res) => {
     return true;
   }
 };
-

@@ -1,21 +1,21 @@
 const fs = require('fs');
 
-let fileType = dataString => {
-  let dataTypes = {
+const fileType = (dataString) => {
+  const dataTypes = {
     '.css': 'text/css',
     '.js': 'application/javascript',
     '.png': 'image/png',
     '.jpg': 'image/jpg',
-    '.ico': 'image/x-icon'
+    '.ico': 'image/x-icon',
   };
-  for (let type in dataTypes) {
+  for (const type in dataTypes) {
     if (dataString.endsWith(type)) {
       return dataTypes[type];
     }
   }
-}
+};
 
-let favHandler = (req, res) => {
+const favHandler = (req, res) => {
   fs.readFile('./public/images/favicon.ico', (err, data) => {
     if (err) {
       console.log(err);
@@ -23,7 +23,7 @@ let favHandler = (req, res) => {
     }
 
     res.writeHead(200, {
-      'Content-Type': fileType(req.pathname)
+      'Content-Type': fileType(req.pathname),
     });
 
     res.write(data);
@@ -31,15 +31,14 @@ let favHandler = (req, res) => {
   });
 };
 
-let resData = (req, res) => {
-
+const resData = (req, res) => {
   fs.readFile('.' + req.pathname, (err, data) => {
     if (err) {
       console.log(err);
       return;
     }
     res.writeHead(200, {
-      'Content-Type': fileType(req.pathname)
+      'Content-Type': fileType(req.pathname),
     });
     res.write(data);
     res.end();
@@ -52,7 +51,7 @@ module.exports = (req, res) => {
   } else if (req.pathname.startsWith('/public/') && req.method === 'GET') {
     resData(req, res);
   } else {
-      res.write('404');
+    res.write('404');
     res.end();
   }
-}
+};

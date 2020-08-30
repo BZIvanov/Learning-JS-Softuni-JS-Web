@@ -1,27 +1,24 @@
 const fs = require('fs');
 const path = require('path');
-let Image = require('../models/imageSchema');
-
+const Image = require('../models/imageSchema');
 
 module.exports = (req, res) => {
   if (req.pathname === '/search' && req.method === 'GET') {
     fs.readFile(path.join(__dirname, '../views/results.html'), (err, data) => {
-
       if (err) {
         console.log(err);
         return;
       }
 
       res.writeHead(200, {
-        'Content-Type': 'text/html'
+        'Content-Type': 'text/html',
       });
 
       let result = '';
 
-      Image
-        .find({})
-        .then(images => {
-          for (let image of images) {
+      Image.find({})
+        .then((images) => {
+          for (const image of images) {
             result += `<fieldset>
                         <legend>${image.title}:</legend>
                         <img src="${image.url}"/>
@@ -30,11 +27,13 @@ module.exports = (req, res) => {
                         </fieldset>`;
           }
 
-          data = data.toString().replace('<div class="replaceMe"></div>', result);
-
+          data = data
+            .toString()
+            .replace('<div class="replaceMe"></div>', result);
 
           res.end(data);
-        }).catch(err => {
+        })
+        .catch((err) => {
           console.log(err);
         });
     });
