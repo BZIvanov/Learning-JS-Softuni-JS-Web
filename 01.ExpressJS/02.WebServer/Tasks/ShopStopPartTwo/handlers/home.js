@@ -11,7 +11,7 @@ module.exports = (req, res) => {
   if (req.pathname === '/' && req.method === 'GET') {
     // normalize method removes dots from the path and double slashes etc.
     // __dirname is a global variable which is the path to the module. Console.log it anywhere to see example
-    let filePath = path.normalize(
+    const filePath = path.normalize(
       path.join(__dirname, '../views/home/index.html')
     );
 
@@ -29,18 +29,19 @@ module.exports = (req, res) => {
       }
 
       // query is property in the object returned from url.parse. And we need to provide query to the querystring module to be parsed. We dont have to provide the whole url, just the query
-      let queryData = qs.parse(url.parse(req.url).query);
-      //console.log(queryData)
+      const queryData = qs.parse(url.parse(req.url).query);
 
       let products = database.products.getAll();
       if (queryData.query) {
-        products = products.filter((x) => {
-          return x.name === queryData.query;
+        products = products.filter((product) => {
+          return product.name
+            .toLowerCase()
+            .includes(queryData.query.toLowerCase());
         });
       }
 
       let content = '';
-      for (let product of products) {
+      for (const product of products) {
         content += `<div class="product-card">
                     <img class="product-img" src="${product.image}">
                     <h2>${product.name}</h2>
@@ -48,7 +49,7 @@ module.exports = (req, res) => {
                 </div>`;
       }
 
-      let html = data.toString().replace('{content}', content);
+      const html = data.toString().replace('{content}', content);
 
       res.writeHead(200, {
         'Content-Type': 'text/html',

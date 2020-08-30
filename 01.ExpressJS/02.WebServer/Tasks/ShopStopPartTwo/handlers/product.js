@@ -2,8 +2,6 @@ const url = require('url');
 const database = require('../config/database');
 const fs = require('fs');
 const path = require('path');
-// querystring module will collect data from stream. For example from form submition we will get object where the properties will be from the input name attribute
-const qs = require('querystring');
 const multiparty = require('multiparty');
 const shortid = require('shortid');
 
@@ -11,7 +9,7 @@ module.exports = (req, res) => {
   req.pathname = req.pathname || url.parse(req.url).pathname;
 
   if (req.pathname === '/product/add' && req.method === 'GET') {
-    let filePath = path.normalize(
+    const filePath = path.normalize(
       path.join(__dirname, '../views/products/add.html')
     );
 
@@ -33,8 +31,8 @@ module.exports = (req, res) => {
       res.end();
     });
   } else if (req.pathname === '/product/add' && req.method === 'POST') {
-    let form = new multiparty.Form();
-    let product = {};
+    const form = new multiparty.Form();
+    const product = {};
 
     form.on('part', (part) => {
       if (part.filename) {
@@ -52,17 +50,12 @@ module.exports = (req, res) => {
           );
           product.image = `content/images/${fileName}.jpeg`;
 
-          fs.writeFile(
-            `${filePath}`,
-            dataString,
-            { encoding: 'ascii' },
-            (err) => {
-              if (err) {
-                console.log(err);
-                return;
-              }
+          fs.writeFile(filePath, dataString, { encoding: 'ascii' }, (err) => {
+            if (err) {
+              console.log(err);
+              return;
             }
-          );
+          });
         });
       } else {
         part.setEncoding('utf-8');
