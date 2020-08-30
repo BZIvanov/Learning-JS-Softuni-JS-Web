@@ -4,17 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "1.18.3",
-    "express": "4.16.3",
-    "express-fileupload": "0.4.0",
-    "formidable": "^1.1.1",
-    "mongoose": "5.8.9",
-    "shortid": "^2.2.8"
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.0",
+    "formidable": "^1.2.2",
+    "mongoose": "^5.10.2",
+    "shortid": "^2.2.15"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }

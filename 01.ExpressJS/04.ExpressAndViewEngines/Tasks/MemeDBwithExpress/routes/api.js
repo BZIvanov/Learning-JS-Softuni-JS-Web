@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const memeService = require('../services/memeService');
+const memeService = require('../services/meme');
 
 const deleteMeme = (req, res) => {
   let memeId = req.params.id;

@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const fs = require('fs');
+
 const filePath = './views/home.html';
 
 router.get('/', (req, res) => {

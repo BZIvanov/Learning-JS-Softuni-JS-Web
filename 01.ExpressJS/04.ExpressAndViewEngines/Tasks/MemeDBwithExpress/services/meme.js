@@ -1,7 +1,7 @@
-const Meme = require('../models/memeModel');
-const Genre = require('../models/genreModel');
-
+const Meme = require('../models/meme');
+const Genre = require('../models/genre');
 const crud = require('../infrastructure/mongooseCrud');
+
 const memes = crud(Meme);
 const genres = crud(Genre);
 

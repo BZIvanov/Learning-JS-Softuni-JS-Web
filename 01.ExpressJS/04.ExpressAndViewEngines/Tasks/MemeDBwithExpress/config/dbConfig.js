@@ -1,24 +1,23 @@
 const mongoose = require('mongoose');
 const Admin = mongoose.mongo.Admin;
-
-const memeService = require('../services/memeService');
-const genreService = require('../services/genreService');
-
+const memeService = require('../services/meme');
+const genreService = require('../services/genre');
 const initialData = require('../infrastructure/initialData');
 
 const databaseName = 'memeDb';
 
-mongoose.Promise = Promise;
-
 module.exports = new Promise((resolve, reject) => {
-  mongoose.connect(`mongodb://localhost:27017/${databaseName}`);
+  mongoose.connect(`mongodb://localhost:27017/${databaseName}`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   mongoose.connection
     .on('open', () => {
       console.log(
         `Successfully connected to MongoDB, ${databaseName} database`
       );
       new Admin(mongoose.connection.db).listDatabases((err, result) => {
-        let database = result.databases
+        const database = result.databases
           .map((d) => d.name)
           .filter((n) => n === databaseName)[0];
         if (!database) {

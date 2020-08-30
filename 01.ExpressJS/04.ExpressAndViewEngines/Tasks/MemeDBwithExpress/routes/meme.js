@@ -3,52 +3,48 @@ const url = require('url');
 const qs = require('querystring');
 const shortid = require('shortid');
 const path = require('path');
-
 const router = require('express').Router();
-
-const memeService = require('../services/memeService');
-const genreService = require('../services/genreService');
+const memeService = require('../services/meme');
+const genreService = require('../services/genre');
 const memeTemplates = require('../infrastructure/memeTemplates');
 const uiTemplates = require('../infrastructure/uiTemplates');
+
 const placeholder = '<div id="replaceMe">{{replaceMe}}</div>';
 
-// Utils
-
-let memeGenerator = (title, memeSrc, description, privacy, genreId) => {
+const memeGenerator = (title, memeSrc, description, privacy, genreId) => {
   return {
-    title: title,
-    memeSrc: memeSrc,
-    description: description,
-    privacy: privacy,
+    title,
+    memeSrc,
+    description,
+    privacy,
     dateStamp: Date.now(),
     genreId,
   };
 };
 
-let defaultResponse = (respString, res) => {
+const defaultResponse = (respString, res) => {
   res.writeHead(200, {
     'Content-Type': 'text/html',
   });
   res.end(respString);
 };
 
-let fieldChecker = (obj) => {
-  for (let prop in obj) {
+const fieldChecker = (obj) => {
+  for (const prop in obj) {
     if (obj[prop] === '') {
       return true;
     }
   }
 };
-//
 
-let viewAll = (req, res) => {
+const viewAll = (req, res) => {
   memeService.getAll().then((data) => {
     data = data
       .sort((a, b) => b.dateStamp - a.dateStamp)
       .filter((meme) => meme.privacy === 'on');
 
     let responseString = '';
-    for (let meme of data) {
+    for (const meme of data) {
       responseString += memeTemplates.viewAll(meme._id, meme.memeSrc);
     }
 
@@ -64,7 +60,7 @@ let viewAll = (req, res) => {
   });
 };
 
-let viewAddMeme = (req, res, status = null) => {
+const viewAddMeme = (req, res, status = null) => {
   fs.readFile('./views/addMeme.html', (err, data) => {
     if (err) {
       console.log(err);
@@ -97,8 +93,8 @@ let viewAddMeme = (req, res, status = null) => {
   });
 };
 
-let getDetails = (req, res) => {
-  let targetId = qs.parse(url.parse(req.url).query).id;
+const getDetails = (req, res) => {
+  const targetId = qs.parse(url.parse(req.url).query).id;
 
   memeService
     .get(targetId)
@@ -124,16 +120,16 @@ let getDetails = (req, res) => {
     });
 };
 
-let addMeme = (req, res) => {
-  let fileName = shortid.generate() + '.jpg';
-  let fields = req.body;
-  let files = req.files;
+const addMeme = (req, res) => {
+  const fileName = shortid.generate() + '.jpg';
+  const fields = req.body;
+  const files = req.files;
 
   memeService.getAll().then((allMemes) => {
-    let dirName = `/public/memeStorage/${Math.ceil(allMemes.length / 10)}`;
-    let relativeFilePath = dirName + '/' + fileName;
-    let absoluteDirPath = path.join(__dirname, `../${dirName}`);
-    let absoluteFilePath = absoluteDirPath + '/' + fileName;
+    const dirName = `/public/memeStorage/${Math.ceil(allMemes.length / 10)}`;
+    const relativeFilePath = dirName + '/' + fileName;
+    const absoluteDirPath = path.join(__dirname, `../${dirName}`);
+    const absoluteFilePath = absoluteDirPath + '/' + fileName;
 
     fs.access(absoluteDirPath, (err) => {
       if (err) {
@@ -150,7 +146,7 @@ let addMeme = (req, res) => {
         if (fieldChecker(fields)) {
           viewAddMeme(req, res, 'err');
         } else {
-          let memeForImport = memeGenerator(
+          const memeForImport = memeGenerator(
             fields.memeTitle,
             relativeFilePath,
             fields.memeDescription,
@@ -172,7 +168,7 @@ let addMeme = (req, res) => {
   });
 };
 
-let getSearchMeme = (req, res) => {
+const getSearchMeme = (req, res) => {
   genreService.getAll().then((genres) => {
     fs.readFile('./views/searchMeme.html', (err, data) => {
       if (err) {
@@ -192,22 +188,20 @@ let getSearchMeme = (req, res) => {
   });
 };
 
-let searchForMeme = (req, res) => {
-  let params = req.query;
-  console.log(req);
-
-  let title = params.memeTitle;
-  let selectedGenre = params.genreSelect;
+const searchForMeme = (req, res) => {
+  const params = req.query;
+  const title = params.memeTitle;
+  const selectedGenre = params.genreSelect;
 
   let sorted = [];
 
   genreService.getAll().then((tags) => {
     memeService.getAll().then((memes) => {
       if (selectedGenre !== 'all') {
-        let demo = tags.find((x) => {
+        const demo = tags.find((x) => {
           return x.id == selectedGenre;
         });
-        let arrSelection = demo.memeArr;
+        const arrSelection = demo.memeArr;
 
         for (let meme of memes) {
           if (arrSelection.indexOf(meme.id) !== -1) {
@@ -254,7 +248,7 @@ let searchForMeme = (req, res) => {
   });
 };
 
-let createGenreView = (req, res) => {
+const createGenreView = (req, res) => {
   fs.readFile('./views/addGenre.html', (err, data) => {
     if (err) {
       console.log(err);

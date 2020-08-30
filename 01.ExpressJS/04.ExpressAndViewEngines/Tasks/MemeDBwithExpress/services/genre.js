@@ -1,6 +1,6 @@
-const Genre = require('../models/genreModel');
-
+const Genre = require('../models/genre');
 const crud = require('../infrastructure/mongooseCrud');
+
 const genres = crud(Genre);
 
 module.exports = {
