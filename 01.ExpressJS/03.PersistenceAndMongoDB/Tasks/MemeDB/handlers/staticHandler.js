@@ -1,8 +1,8 @@
 const fs = require('fs');
 const filePath = './public/images/favicon.ico';
 
-let typeChecker = (path) => {
-  let support = {
+const typeChecker = (path) => {
+  const supportedTypes = {
     '.css': 'text/css',
     '.html': 'text/html',
     '.js': 'text/javascript',
@@ -10,15 +10,15 @@ let typeChecker = (path) => {
     '.jpg': 'image/jpg',
   };
 
-  for (let type in support) {
+  for (const type in supportedTypes) {
     if (path.endsWith(type)) {
-      return support[type];
+      return supportedTypes[type];
     }
   }
   return true;
 };
 
-let getFavicon = (req, res) => {
+const getFavicon = (req, res) => {
   fs.readFile(filePath, (err, data) => {
     if (err) {
       console.log(err);
@@ -31,9 +31,9 @@ let getFavicon = (req, res) => {
   });
 };
 
-let getStaticFiles = (req, res) => {
-  let resPath = '.' + req.pathname;
-  let type = typeChecker(resPath);
+const getStaticFiles = (req, res) => {
+  const resPath = '.' + req.pathname;
+  const type = typeChecker(resPath);
 
   fs.readFile(resPath, (err, data) => {
     if (err) {
@@ -48,14 +48,14 @@ let getStaticFiles = (req, res) => {
   });
 };
 
-let handler404 = (req, res) => {
+const handler404 = (req, res) => {
   res.writeHead(404, 'Resource not found');
   res.end();
 };
 
 module.exports = (req, res) => {
-  let resPath = '.' + req.pathname;
-  let type = typeChecker(resPath);
+  const resPath = '.' + req.pathname;
+  const type = typeChecker(resPath);
 
   if (req.pathname === '/favicon.ico' && req.method === 'GET') {
     getFavicon(req, res);

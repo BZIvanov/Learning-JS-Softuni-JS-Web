@@ -12,7 +12,7 @@ function viewAll(req, res) {
       return;
     }
 
-    let sortedData = db
+    const sortedData = db
       .getDb()
       .sort((a, b) => b.dateStamp - a.dateStamp)
       .filter((meme) => meme.privacy === 'on')
@@ -47,11 +47,10 @@ function viewAddMeme(req, res) {
 }
 
 function getDetails(req, res) {
-  let memeId = qs.parse(url.parse(req.url).query).id;
+  const memeId = qs.parse(url.parse(req.url).query).id;
+  const targetedMeme = db.getDb().find((m) => m.id === memeId);
 
-  let targetedMeme = db.getDb().find((m) => m.id === memeId);
-
-  let memeDetails = `<div class="content">
+  const memeDetails = `<div class="content">
       <img src="${targetedMeme.memeSrc}" alt=""/>
       <h3>Title  ${targetedMeme.title}</h3>
       <p> ${targetedMeme.description}</p>
@@ -74,11 +73,11 @@ function getDetails(req, res) {
 }
 
 function addMeme(req, res) {
-  let dbLength = db.getDb().length;
-  let dbPath = `./public/memeStorage/${Math.floor(dbLength / 10)}`;
+  const dbLength = db.getDb().length;
+  const dbPath = `./public/memeStorage/${Math.floor(dbLength / 10)}`;
 
-  let randomFileName = shortid.generate();
-  let memePath = dbPath + '/' + randomFileName + '.jpg';
+  const randomFileName = shortid.generate();
+  const memePath = dbPath + '/' + randomFileName + '.jpg';
 
   fs.access(dbPath, (err) => {
     if (err) {
@@ -86,7 +85,7 @@ function addMeme(req, res) {
       fs.mkdirSync(dbPath);
     }
 
-    let form = new formidable.IncomingForm();
+    const form = new formidable.IncomingForm();
     form
       .on('error', (err) => {
         console.log(err);
@@ -98,9 +97,8 @@ function addMeme(req, res) {
       });
 
     form.parse(req, (err, fields, files) => {
-      let id = shortid.generate();
-      let newMeme = {
-        id: id,
+      const newMeme = {
+        id: shortid.generate(),
         title: fields.memeTitle,
         memeSrc: memePath,
         description: fields.memeDescription,
@@ -119,6 +117,7 @@ function addMeme(req, res) {
           res.writeHead(200, {
             'Content-Type': 'text/html',
           });
+
           data = data
             .toString()
             .replace(

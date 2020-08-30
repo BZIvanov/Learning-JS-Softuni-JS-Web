@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "formidable": "1.2.1",
-    "shortid": "2.2.14"
+    "formidable": "^1.2.2",
+    "shortid": "^2.2.15"
   }
 }
