@@ -40,7 +40,7 @@ const resourceHandler = (req, res) => {
 };
 
 const getContentType = (url) => {
-  let ext = url.split('.').pop();
+  const ext = url.split('.').pop();
   if (typeof allowedStaticFiles[ext] !== 'undefined') {
     return allowedStaticFiles[ext];
   } else {

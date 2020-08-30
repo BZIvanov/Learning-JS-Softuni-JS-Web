@@ -2,7 +2,7 @@ const fs = require('fs');
 const qs = require('querystring');
 const db = require('./../config/dataBase');
 
-let getAddMovieForm = (req, res) => {
+const getAddMovieForm = (req, res) => {
   fs.readFile('./views/addMovie.html', (err, data) => {
     if (err) {
       console.log(err);
@@ -20,7 +20,7 @@ let getAddMovieForm = (req, res) => {
 module.exports = (req, res) => {
   if (req.pathname === '/viewAllMovies' && req.method === 'GET') {
     let id = 0;
-    let moviesSorted = db
+    const moviesSorted = db
       .map((m) => {
         m.id = id++;
         return m;
@@ -59,7 +59,7 @@ module.exports = (req, res) => {
   } else if (req.pathname === '/addMovie' && req.method === 'GET') {
     getAddMovieForm(req, res);
   } else if (req.pathname === '/addMovie' && req.method === 'POST') {
-    let body = [];
+    const body = [];
     req
       .on('data', (chunk) => {
         body.push(chunk);

@@ -7,7 +7,6 @@ module.exports = (req, res) => {
   ) {
     fs.readFile('./views/home.html', 'utf8', (err, data) => {
       if (err) {
-        console.log(err);
         res.writeHead(404, {
           'Content-Type': 'text/plain',
         });

@@ -9,7 +9,7 @@ module.exports = (req, res) => {
   req.pathname = req.pathname || url.parse(req.url).pathname;
 
   if (req.pathname === '/product/add' && req.method === 'GET') {
-    let filePath = path.normalize(
+    const filePath = path.normalize(
       path.join(__dirname, '../views/products/add.html')
     );
 
@@ -32,7 +32,7 @@ module.exports = (req, res) => {
     });
 
     req.on('end', () => {
-      let product = qs.parse(dataString);
+      const product = qs.parse(dataString);
       database.products.add(product);
 
       res.writeHead(302, {
