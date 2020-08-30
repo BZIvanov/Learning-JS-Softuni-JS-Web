@@ -1,40 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="/public/css/main.css" />
-</head>
+  </head>
 
-<body>
+  <body>
     <header>
-        <div class="inner">
-            <nav>
-                <a href="/" class="logo"><img class="logo" src="/public/images/nodeLogo.png" alt="nodeLogo"></a>
-                <input type="checkbox" id="nav" /><label for="nav"></label>
-                <ul>
-                    <li><a href="/memes/addMeme">Add Meme</a></li>
-                    <li><a href="/memes/viewAllMemes">View All Memes</a></li>
-                    <li><a href="/memes/searchMeme">Search</a></li>
-                </ul>
-            </nav>
-        </div>
+      <div class="inner">
+        <nav>
+          <a href="/" class="logo"
+            ><img class="logo" src="/public/images/nodeLogo.png" alt="nodeLogo"
+          /></a>
+          <input type="checkbox" id="nav" /><label for="nav"></label>
+          <ul>
+            <li><a href="/memes/addMeme">Add Meme</a></li>
+            <li><a href="/memes/viewAllMemes">View All Memes</a></li>
+            <li><a href="/memes/searchMeme">Search</a></li>
+          </ul>
+        </nav>
+      </div>
     </header>
     <h1>Search Memes</h1>
     <div class="container">
-        <form action="/memes/sSearchMeme" enctype=multipart/form-data>
-            <label for="memeTitle">Title</label>
-            <input type="text" id="memeTitle" name="memeTitle" placeholder="The title of the meme">
+      <form action="/memes/sSearchMeme" enctype="multipart/form-data">
+        <label for="memeTitle">Title</label>
+        <input
+          type="text"
+          id="memeTitle"
+          name="memeTitle"
+          placeholder="The title of the meme"
+        />
 
-            <select name='genreSelect' id="genreSelect">
-                <div id="replaceMe">{{replaceMe}}</div>
-            </select>
-            <input type="submit" value="Submit">
-
-        </form>
+        <select name="genreSelect" id="genreSelect">
+          <div id="replaceMe">{{replaceMe}}</div>
+        </select>
+        <input type="submit" value="Submit" />
+      </form>
     </div>
-
-</body>
-
+  </body>
 </html>
