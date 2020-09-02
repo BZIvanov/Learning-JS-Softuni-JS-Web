@@ -6,7 +6,7 @@ module.exports = (config) => {
     useCreateIndex: true,
   });
 
-  let database = mongoose.connection;
+  const database = mongoose.connection;
 
   database.once('open', (err) => {
     if (err) {
