@@ -1,26 +1,28 @@
 import React from 'react';
 
 // This function takes a component...
-function errorHandlingWrapper(WrappedComponent) {    
+function errorHandlingWrapper(WrappedComponent) {
   return class ErrorHandlingWrapper extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        hasError: false
-      }
+        hasError: false,
+      };
     }
 
     componentDidCatch(error, info) {
       console.log(error, info);
-    };
+    }
 
     static getDerivedStateFromError(error) {
       return { hasError: true };
-    };
+    }
 
     render() {
       if (this.state.hasError) {
-        return (<h1>Something went wrong with component {WrappedComponent.name}</h1>);
+        return (
+          <h1>Something went wrong with component {WrappedComponent.name}</h1>
+        );
       }
       return <WrappedComponent {...this.props} />;
     }

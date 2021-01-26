@@ -9,7 +9,7 @@ function BookList({ data, theme }) {
 
   return (
     <ul className={theme}>
-      {data.map(book => (
+      {data.map((book) => (
         <li key={book.id}>Title: {book.title}</li>
       ))}
     </ul>

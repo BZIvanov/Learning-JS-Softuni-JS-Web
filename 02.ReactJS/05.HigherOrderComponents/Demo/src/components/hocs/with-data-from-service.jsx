@@ -30,7 +30,7 @@ function withDataFromService(Component, initialData, serviceMethod) {
 
       return <Component data={data} {...this.props} />;
     }
-  }
+  };
 }
 
 export default withDataFromService;

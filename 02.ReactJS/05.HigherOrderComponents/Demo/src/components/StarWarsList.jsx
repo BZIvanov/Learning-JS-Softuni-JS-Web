@@ -9,11 +9,15 @@ const StarWarsList = ({ data: characters, foo, pesho }) => {
 
   return (
     <ul>
-      {characters.map(character => (
+      {characters.map((character) => (
         <li key={character.url}>Name: {character.name}</li>
       ))}
     </ul>
   );
-}
+};
 
-export default withDataFromService(StarWarsList, [], new StarWarsService().getStarWarsCharacters);
+export default withDataFromService(
+  StarWarsList,
+  [],
+  new StarWarsService().getStarWarsCharacters
+);
