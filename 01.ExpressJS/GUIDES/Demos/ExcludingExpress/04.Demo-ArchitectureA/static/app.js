@@ -1,3 +1,3 @@
 function getMessage() {
-    alert('It works!');
+  alert('It works!');
 }
