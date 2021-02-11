@@ -65,16 +65,16 @@ function save(cb) {
 }
 
 function load(cb) {
-  fs.exists('storage.json', (exists) => {
-    if (exists) {
-      fs.readFile('storage.json', (err, data) => {
-        if (err) throw err;
-        storage = JSON.parse(data);
-        cb(storage);
-      });
-    } else {
-      cb('File does not exist');
+  fs.stat('storage.json', (err, stats) => {
+    if (err) {
+      return cb('File does not exist');
     }
+
+    fs.readFile('storage.json', (err, data) => {
+      if (err) throw err;
+      storage = JSON.parse(data);
+      cb(storage);
+    });
   });
 }
 
