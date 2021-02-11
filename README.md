@@ -40,3 +40,7 @@ Open terminal in the root folder with package.json file and run one of the follo
 - **npm view mongoose dependencies** - will display the dependencies for specific package
 
 - **npm view mongoose versions** - will display all the release versions of specific package
+
+## Additional
+
+Check [here](https://github.com/LeCoupa/awesome-cheatsheets) for cheat-sheet with methods usage.

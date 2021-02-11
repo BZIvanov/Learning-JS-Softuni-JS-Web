@@ -14,5 +14,4 @@ const productSchema = new mongoose.Schema({
   isBought: { type: mongoose.Schema.Types.Boolean, default: false },
 });
 
-const Product = mongoose.model('Product', productSchema);
-module.exports = Product;
+module.exports = mongoose.model('Product', productSchema);

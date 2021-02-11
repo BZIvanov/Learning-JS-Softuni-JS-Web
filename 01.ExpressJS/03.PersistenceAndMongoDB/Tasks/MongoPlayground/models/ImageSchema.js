@@ -12,5 +12,4 @@ const imageSchema = new mongoose.Schema({
   tags: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Tag' }],
 });
 
-const Image = mongoose.model('Image', imageSchema);
-module.exports = Image;
+module.exports = mongoose.model('Image', imageSchema);

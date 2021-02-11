@@ -11,5 +11,4 @@ tagSchema.methods.toLowerCase = function () {
   return (this.name = name.toLowerCase());
 };
 
-const Tag = mongoose.model('Tag', tagSchema);
-module.exports = Tag;
+module.exports = mongoose.model('Tag', tagSchema);
