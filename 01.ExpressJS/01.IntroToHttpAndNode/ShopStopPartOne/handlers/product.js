@@ -1,5 +1,5 @@
 const url = require('url');
-const database = require('../config/database');
+const database = require('../database');
 const fs = require('fs');
 const path = require('path');
 // querystring module will collect data from stream. For example from form submition we will get object where the properties will be from the input name attribute

@@ -2,7 +2,7 @@ const url = require('url');
 const fs = require('fs');
 const path = require('path');
 const qs = require('querystring');
-const database = require('../config/database');
+const database = require('../database');
 
 module.exports = (req, res) => {
   // we will add pathname property to the req object
@@ -33,8 +33,10 @@ module.exports = (req, res) => {
 
       let products = database.products.getAll();
       if (queryData.query) {
-        products = products.filter((x) => {
-          return x.name === queryData.query;
+        products = products.filter((product) => {
+          return product.name
+            .toLowerCase()
+            .includes(queryData.query.toLowerCase());
         });
       }
 
