@@ -12,13 +12,19 @@ const userSchema = mongoose.Schema({
     unique: true,
   },
   password: { type: String, required: true, minlength: 5, maxlength: 1024 },
+  isAdmin: Boolean,
 });
 
 userSchema.methods.generateAuthToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET);
+  return jwt.sign(
+    { id: this._id, isAdmin: this.isAdmin },
+    process.env.JWT_SECRET
+  );
 };
 
-function validateUser(user) {
+const User = new mongoose.model('User', userSchema);
+
+function validateRegister(user) {
   const schema = Joi.object({
     name: Joi.string().min(3).max(20).required(),
     email: Joi.string().min(5).max(50).required().email(),
@@ -28,7 +34,15 @@ function validateUser(user) {
   return error;
 }
 
-const User = new mongoose.model('User', userSchema);
+function validateLogin(user) {
+  const schema = Joi.object({
+    email: Joi.string().min(5).max(50).required().email(),
+    password: Joi.string().min(5).max(50).required(),
+  });
+  const { error } = schema.validate(user);
+  return error;
+}
 
 exports.User = User;
-exports.validateUser = validateUser;
+exports.validateRegister = validateRegister;
+exports.validateLogin = validateLogin;
