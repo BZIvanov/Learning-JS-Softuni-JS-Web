@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 const Joi = require('joi');
 
-const movieSchema = mongoose.Schema({
+const movieSchema = Schema({
   name: { type: String, required: true, minlength: 5, maxlength: 50 },
 });
 
@@ -13,7 +13,7 @@ function validateMovie(movie) {
   return error;
 }
 
-const Movie = new mongoose.model('Movie', movieSchema);
+const Movie = new model('Movie', movieSchema);
 
 exports.Movie = Movie;
 exports.validateMovie = validateMovie;
