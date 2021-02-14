@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const asyncMiddleware = require('../middlewares/async');
 const { User, validateRegister, validateLogin } = require('../models/user');
 
@@ -9,23 +8,18 @@ module.exports.register = asyncMiddleware(async (req, res) => {
   }
 
   const { name, email, password } = req.body;
-
-  let user = await User.findOne({ email });
-  if (user) {
+  const isExistingUser = await User.findOne({ email });
+  if (isExistingUser) {
     return res.status(400).send('User already exists.');
   }
 
-  const salt = await bcrypt.genSalt(8);
-  const hashedPassword = await bcrypt.hash(password, salt);
-  user = new User({ name, email, password: hashedPassword });
-  await user.save();
+  const newUser = new User({ name, email, password });
+  await newUser.save();
 
-  const token = user.generateAuthToken();
+  const token = newUser.generateAuthToken();
 
-  res.header('Authorization', `Bearer ${token}`).send({
-    id: user._id,
-    name: user.name,
-    email: user.email,
+  res.header('Authorization', `Bearer ${token}`).status(201).send({
+    message: 'Success',
   });
 });
 
@@ -36,29 +30,25 @@ module.exports.login = asyncMiddleware(async (req, res) => {
   }
 
   const { email, password } = req.body;
-
-  let user = await User.findOne({ email });
+  const user = await User.findOne({ email });
   if (!user) {
     return res.status(400).send('Invalid email or password.');
   }
 
-  // user.password contains the salt which bcrypt will use
-  const validPassword = await bcrypt.compare(password, user.password);
-  if (!validPassword) {
+  const isCorrect = await user.isPasswordCorrect(password, user.password);
+  if (!isCorrect) {
     return res.status(400).send('Invalid email or password.');
   }
 
   const token = user.generateAuthToken();
 
   res.header('Authorization', `Bearer ${token}`).send({
-    id: user._id,
-    name: user.name,
-    email: user.email,
+    message: 'Success',
   });
 });
 
 module.exports.me = asyncMiddleware(async (req, res) => {
-  const user = await User.findById(req.user.id).select('-password');
+  const user = await User.findById(req.user.id).select('-password -role -__v');
   if (!user) {
     return res.status(404).send('User not found!');
   }

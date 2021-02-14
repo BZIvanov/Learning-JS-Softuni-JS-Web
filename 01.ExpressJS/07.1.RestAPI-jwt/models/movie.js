@@ -5,6 +5,8 @@ const movieSchema = Schema({
   name: { type: String, required: true, minlength: 5, maxlength: 50 },
 });
 
+const Movie = new model('Movie', movieSchema);
+
 function validateMovie(movie) {
   const schema = Joi.object({
     name: Joi.string().min(5).max(50).required(),
@@ -12,8 +14,6 @@ function validateMovie(movie) {
   const { error } = schema.validate(movie);
   return error;
 }
-
-const Movie = new model('Movie', movieSchema);
 
 exports.Movie = Movie;
 exports.validateMovie = validateMovie;

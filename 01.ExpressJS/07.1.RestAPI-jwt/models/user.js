@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 
@@ -12,14 +13,38 @@ const userSchema = Schema({
     unique: true,
   },
   password: { type: String, required: true, minlength: 5, maxlength: 1024 },
-  isAdmin: Boolean,
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user',
+  },
+});
+
+userSchema.pre('save', async function () {
+  try {
+    this.password = await bcrypt.hash(this.password, 8);
+  } catch (err) {
+    throw new Error('Failed while user password hashing.');
+  }
 });
 
 userSchema.methods.generateAuthToken = function () {
   return jwt.sign(
-    { id: this._id, isAdmin: this.isAdmin },
+    { id: this._id, name: this.name, isAdmin: this.isAdmin === 'admin' },
     process.env.JWT_SECRET
   );
+};
+
+userSchema.methods.isPasswordCorrect = async (
+  incomingPassword,
+  actualPassword
+) => {
+  try {
+    // user.password contains the salt which bcrypt will use
+    return await bcrypt.compare(incomingPassword, actualPassword);
+  } catch (err) {
+    throw new Error('Error with comparing passwords');
+  }
 };
 
 const User = new model('User', userSchema);
