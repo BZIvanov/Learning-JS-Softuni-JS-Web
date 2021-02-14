@@ -35,7 +35,7 @@ module.exports.login = asyncMiddleware(async (req, res) => {
     return res.status(400).send('Invalid email or password.');
   }
 
-  const isCorrect = await user.isPasswordCorrect(password, user.password);
+  const isCorrect = await user.isPasswordCorrect(password);
   if (!isCorrect) {
     return res.status(400).send('Invalid email or password.');
   }

@@ -18,6 +18,7 @@ const userSchema = Schema({
     enum: ['user', 'admin'],
     default: 'user',
   },
+  createdAt: { type: Date, default: Date.now },
 });
 
 userSchema.pre('save', async function () {
@@ -35,13 +36,10 @@ userSchema.methods.generateAuthToken = function () {
   );
 };
 
-userSchema.methods.isPasswordCorrect = async (
-  incomingPassword,
-  actualPassword
-) => {
+userSchema.methods.isPasswordCorrect = async function (incomingPassword) {
   try {
-    // user.password contains the salt which bcrypt will use
-    return await bcrypt.compare(incomingPassword, actualPassword);
+    // this.password already contains the salt which bcrypt will use
+    return await bcrypt.compare(incomingPassword, this.password);
   } catch (err) {
     throw new Error('Error with comparing passwords');
   }
