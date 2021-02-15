@@ -1,9 +1,11 @@
-const env = process.env.NODE_ENV || 'development';
-
-const config = require('./config/config')[env];
-require('./config/database')(config);
+require('dotenv').config();
 const app = require('express')();
-require('./config/express')(app);
-require('./config/routes')(app);
-require('./config/passport')();
-app.listen(config.port, () => console.log('Listening on port http://localhost:' + config.port));
+
+require('./startup/db')();
+require('./startup/passport')();
+require('./startup/handlebars')(app);
+require('./startup/express')(app);
+require('./startup/routes')(app);
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log('Listening on http://localhost:' + port));

@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
 
-module.exports = (config) => {
-  mongoose.connect(config.dbPath, {
+module.exports = () => {
+  mongoose.connect(process.env.DB_URI, {
     useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
   });
+
   const db = mongoose.connection;
   db.once('open', (err) => {
     if (err) {
@@ -15,13 +18,12 @@ module.exports = (config) => {
       .then(() => {
         console.log('Database is ready!');
       })
-      .catch((reason) => {
-        console.log('Something went wrong!');
-        console.log(reason);
+      .catch((err) => {
+        console.log(err);
       });
   });
 
-  db.on('error', (reason) => {
-    console.log(reason);
+  db.on('error', (err) => {
+    console.log(err);
   });
 };

@@ -1,4 +1,3 @@
-const encryption = require('../util/encryption');
 const User = require('../models/User');
 const Car = require('../models/Car');
 const Rent = require('../models/Rent');
@@ -22,20 +21,12 @@ module.exports = {
       return;
     }
 
-    const salt = encryption.generateSalt();
-    const hashedPass = encryption.generateHashedPassword(
-      salt,
-      reqUser.password
-    );
-
     try {
-      let user = await User.create({
+      const user = await User.create({
         username: reqUser.username,
-        hashedPass,
-        salt,
+        password: reqUser.password,
         firstName: reqUser.firstName,
         lastName: reqUser.lastName,
-        roles: ['User'],
       });
 
       req.logIn(user, (err) => {
@@ -70,7 +61,7 @@ module.exports = {
         return;
       }
 
-      if (!user.authenticate(reqUser.password)) {
+      if (!user.isPasswordCorrect(reqUser.password)) {
         reqUser.error = 'Invalid password!';
         res.render('user/login', reqUser);
         return;

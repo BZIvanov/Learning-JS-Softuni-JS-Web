@@ -1,42 +1,45 @@
-const mongoose = require('mongoose');
-const encryption = require('../util/encryption');
+const crypto = require('crypto');
+const { Schema, model } = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-  username: {
-    type: mongoose.Schema.Types.String,
-    required: true,
-    unique: true,
+const userSchema = new Schema({
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  firstName: { type: String },
+  lastName: { type: String },
+  salt: { type: String },
+  roles: {
+    type: [{ type: String, enum: ['user', 'admin'] }],
+    default: ['user'],
   },
-  hashedPass: { type: mongoose.Schema.Types.String, required: true },
-  firstName: { type: mongoose.Schema.Types.String },
-  lastName: { type: mongoose.Schema.Types.String },
-  salt: { type: mongoose.Schema.Types.String, required: true },
-  roles: [{ type: mongoose.Schema.Types.String }],
+});
+
+userSchema.pre('save', function () {
+  const salt = crypto.randomBytes(64).toString('base64');
+  this.salt = salt;
+  this.password = generateHashedPassword(salt, this.password);
 });
 
 userSchema.method({
-  authenticate: function (password) {
+  isPasswordCorrect: function (incomingPassword) {
     return (
-      encryption.generateHashedPassword(this.salt, password) === this.hashedPass
+      generateHashedPassword(this.salt, incomingPassword) === this.password
     );
   },
 });
 
-const User = mongoose.model('User', userSchema);
+const User = model('User', userSchema);
 
 User.seedAdminUser = async () => {
   try {
-    let user = await User.find();
+    const user = await User.find();
     if (user.length > 0) {
       return;
     }
-    const salt = encryption.generateSalt();
-    const hashedPass = encryption.generateHashedPassword(salt, 'admin');
+
     return User.create({
-      username: 'Admin',
-      salt,
-      hashedPass,
-      roles: ['Admin'],
+      username: 'admin',
+      password: 'admin',
+      roles: ['admin'],
     });
   } catch (err) {
     console.log(err);
@@ -44,3 +47,7 @@ User.seedAdminUser = async () => {
 };
 
 module.exports = User;
+
+function generateHashedPassword(salt, password) {
+  return crypto.createHmac('sha256', salt).update(password).digest('hex');
+}

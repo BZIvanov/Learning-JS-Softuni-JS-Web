@@ -8,7 +8,7 @@ module.exports = {
   },
   addCarPost: async (req, res) => {
     let reqCar = req.body;
-    reqCar.image = '\\' + req.file.path;
+    reqCar.image = req.file.path.replace('public', '');
 
     await Car.create(reqCar)
       .then(() => {
@@ -73,11 +73,24 @@ module.exports = {
       car.pricePerDay = editedCarBody.pricePerDay;
 
       if (req.file) {
-        car.image = '\\' + req.file.path;
+        car.image = '\\' + req.file.path + '.jpg';
       }
 
       car.save().then(() => {
         res.redirect('/car/all');
+      });
+    });
+  },
+  searchModel: (req, res) => {
+    let queryData = req.query;
+
+    Car.find({ isRented: false }).then((cars) => {
+      cars = cars.filter((x) =>
+        x.model.toLowerCase().includes(queryData.model.toLowerCase())
+      );
+
+      res.render('car/all', {
+        cars,
       });
     });
   },
