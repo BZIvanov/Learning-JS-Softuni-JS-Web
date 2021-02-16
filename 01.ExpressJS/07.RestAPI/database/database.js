@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
 
 module.exports = () => {
   mongoose.connect('mongodb://localhost:27017/rest-api-db', {
     useNewUrlParser: true,
+    useUnifiedTopology: true,
   });
   const db = mongoose.connection;
   db.once('open', (err) => {
@@ -14,7 +14,7 @@ module.exports = () => {
     console.log('Database ready');
   });
 
-  db.on('error', (reason) => {
-    console.log(reason);
+  db.on('error', (err) => {
+    console.log(err);
   });
 };

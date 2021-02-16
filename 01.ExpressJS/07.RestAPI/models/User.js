@@ -1,16 +1,15 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 const encryption = require('../util/encryption');
-const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   email: {
-    type: Schema.Types.String,
+    type: String,
     required: true,
-    match: /[a-z]@[a-z]\.[a-z]/,
+    match: /[a-z]+@[a-z]+\.[a-z]+/,
   },
-  hashedPassword: { type: Schema.Types.String, required: true },
-  name: { type: Schema.Types.String, required: true },
-  salt: { type: Schema.Types.String, required: true },
+  hashedPassword: { type: String, required: true },
+  name: { type: String, required: true },
+  salt: { type: String, required: true },
   posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
 });
 
@@ -25,4 +24,4 @@ userSchema.method({
   },
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = model('User', userSchema);

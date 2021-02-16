@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const feedRoutes = require('./routes/feed');
 const authRoutes = require('./routes/auth');
 require('./database/database')();
-const port = 3000;
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -27,6 +27,7 @@ app.use((error, req, res, next) => {
   next();
 });
 
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`REST API listening on port: ${port}`);
 });
