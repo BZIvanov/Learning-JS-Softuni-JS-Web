@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { body } = require('express-validator/check');
-const authController = require('../controllers/auth');
+const { signUp, signIn } = require('../controllers/auth');
 const User = require('../models/User');
 
 router.post(
@@ -26,9 +26,9 @@ router.post(
       .isEmpty()
       .withMessage('Please enter a valid name.'),
   ],
-  authController.signUp
+  signUp
 );
 
-router.post('/signin', authController.signIn);
+router.post('/signin', signIn);
 
 module.exports = router;

@@ -1,7 +1,5 @@
 const { validationResult } = require('express-validator/check');
-const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const encryption = require('../util/encryption');
 
 function validateUser(req, res) {
   const errors = validationResult(req);
@@ -21,16 +19,17 @@ module.exports = {
   signUp: (req, res, next) => {
     if (validateUser(req, res)) {
       const { email, password, name } = req.body;
-      const salt = encryption.generateSalt();
-      const hashedPassword = encryption.generateHashedPassword(salt, password);
       User.create({
         email,
-        hashedPassword,
+        password,
         name,
-        salt,
       })
         .then((user) => {
-          res.status(201).json({ message: 'User created!', userId: user._id });
+          const token = user.generateAuthToken();
+          res
+            .header('Authorization', `Bearer ${token}`)
+            .status(201)
+            .json({ message: 'User created!' });
         })
         .catch((error) => {
           if (!error.statusCode) {
@@ -59,20 +58,10 @@ module.exports = {
           throw error;
         }
 
-        // sign function is from jsonwebtoken and with it we will create the toke and provide it to the user
-        const token = jwt.sign(
-          {
-            email: user.email,
-            userId: user._id.toString(),
-          },
-          process.env.JWT_SECRET,
-          { expiresIn: '1h' }
-        );
+        const token = user.generateAuthToken();
 
-        res.status(200).json({
+        res.header('Authorization', `Bearer ${token}`).status(200).json({
           message: 'User successfully logged in!',
-          token,
-          userId: user._id.toString(),
         });
       })
       .catch((error) => {
