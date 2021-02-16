@@ -18,7 +18,7 @@ function validatePost(req, res) {
 }
 
 module.exports = {
-  getPosts: (req, res) => {
+  getPosts: (req, res, next) => {
     // Retrieve all posts in JSON format
     Post.find()
       .then((posts) => {
@@ -33,7 +33,7 @@ module.exports = {
         next(error);
       });
   },
-  createPost: (req, res) => {
+  createPost: (req, res, next) => {
     // Validate post using express-validator
     // Return 422 with errors array if something went wrong
     if (validatePost(req, res)) {
@@ -111,7 +111,7 @@ module.exports = {
         next(error);
       });
   },
-  getPostById: (req, res) => {
+  getPostById: (req, res, next) => {
     const postId = req.params.postId;
 
     Post.findById(postId)
@@ -126,7 +126,7 @@ module.exports = {
         next(error);
       });
   },
-  updatePost: (req, res) => {
+  updatePost: (req, res, next) => {
     // Validate post using express-validator
     // Return 422 with errors array if something went wrong
     if (validatePost(req, res)) {
