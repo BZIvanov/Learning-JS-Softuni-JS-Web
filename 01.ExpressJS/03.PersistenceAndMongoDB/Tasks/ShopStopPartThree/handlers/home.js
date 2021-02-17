@@ -1,11 +1,11 @@
-const url = require('url');
 const fs = require('fs');
 const path = require('path');
 const qs = require('querystring');
 const Product = require('../models/Product');
 
 module.exports = (req, res) => {
-  req.pathname = req.pathname || url.parse(req.url).pathname;
+  const baseURL = 'http://' + req.headers.host + '/';
+  req.pathname = req.pathname || new URL(req.url, baseURL).pathname;
 
   if (req.pathname === '/' && req.method === 'GET') {
     const filePath = path.normalize(
@@ -22,12 +22,13 @@ module.exports = (req, res) => {
         return;
       }
 
-      const queryData = qs.parse(url.parse(req.url).query);
-
+      const queryData = qs.parse(new URL(req.url, baseURL).search);
       Product.find().then((products) => {
-        if (queryData.query) {
+        if (queryData['?query']) {
           products = products.filter((product) =>
-            product.name.toLowerCase().includes(queryData.query.toLowerCase())
+            product.name
+              .toLowerCase()
+              .includes(queryData['?query'].toLowerCase())
           );
         }
 

@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const url = require('url');
 
 function getContentType(url) {
   if (url.endsWith('.css')) {
@@ -15,7 +14,8 @@ function getContentType(url) {
 }
 
 module.exports = (req, res) => {
-  req.pathname = req.pathname || url.parse(req.url).pathname;
+  const baseURL = 'http://' + req.headers.host + '/';
+  req.pathname = req.pathname || new URL(req.url, baseURL).pathname;
 
   if (req.pathname.startsWith('/content/') && req.method === 'GET') {
     const filePath = path.normalize(path.join(__dirname, `..${req.pathname}`));

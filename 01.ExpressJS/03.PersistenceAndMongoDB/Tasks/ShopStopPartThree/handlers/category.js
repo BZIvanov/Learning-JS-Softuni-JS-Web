@@ -1,4 +1,3 @@
-const url = require('url');
 const fs = require('fs');
 const qs = require('querystring');
 const Category = require('../models/Category');
@@ -10,7 +9,8 @@ const Category = require('../models/Category');
  */
 
 module.exports = (req, res) => {
-  req.pathname = req.pathname || url.parse(req.url).pathname;
+  const baseURL = 'http://' + req.headers.host + '/';
+  req.pathname = req.pathname || new URL(req.url, baseURL).pathname;
 
   if (req.pathname === '/category/add' && req.method === 'GET') {
     fs.readFile('./views/category/add.html', (err, data) => {

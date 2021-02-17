@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-module.exports = (config) => {
-  mongoose.connect(config.connectionString, {
+module.exports = () => {
+  mongoose.connect(process.env.DB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
@@ -21,7 +21,4 @@ module.exports = (config) => {
     console.log(err);
     return;
   });
-
-  require('../models/Product');
-  require('../models/Category');
 };

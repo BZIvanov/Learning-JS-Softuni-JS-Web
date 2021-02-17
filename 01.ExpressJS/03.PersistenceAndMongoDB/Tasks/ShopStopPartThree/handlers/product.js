@@ -1,4 +1,3 @@
-const url = require('url');
 const fs = require('fs');
 const path = require('path');
 const multiparty = require('multiparty');
@@ -7,7 +6,8 @@ const Product = require('../models/Product');
 const Category = require('../models/Category');
 
 module.exports = (req, res) => {
-  req.pathname = req.pathname || url.parse(req.url).pathname;
+  const baseURL = 'http://' + req.headers.host + '/';
+  req.pathname = req.pathname || new URL(req.url, baseURL).pathname;
 
   if (req.pathname === '/product/add' && req.method === 'GET') {
     const filePath = path.normalize(
