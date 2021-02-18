@@ -1,5 +1,4 @@
 const User = require('mongoose').model('User');
-const encryption = require('../utils/encryption');
 
 module.exports.registerGet = (req, res) => {
   res.render('user/register');
@@ -11,17 +10,6 @@ module.exports.registerPost = (req, res) => {
   if (user.password && user.password !== user.confirmedPassword) {
     res.render('user/register', { error: 'Passwords do not match' });
     return;
-  }
-
-  const salt = encryption.generateSalt();
-  user.salt = salt;
-
-  if (user.password) {
-    const hashedPassword = encryption.generateHashedPassword(
-      salt,
-      user.password
-    );
-    user.password = hashedPassword;
   }
 
   User.create(user)

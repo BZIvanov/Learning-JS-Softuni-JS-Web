@@ -1,6 +1,15 @@
 const router = require('express').Router();
 const multer = require('multer');
-const controllers = require('../controllers');
+const {
+  addGet,
+  addPost,
+  editGet,
+  editPost,
+  deleteGet,
+  deletePost,
+  buyGet,
+  buyPost,
+} = require('../controllers/product');
 const auth = require('../config/auth');
 
 // this is configuration for multer  storaging file
@@ -32,31 +41,19 @@ const upload = multer({
   fileFilter,
 });
 
-router.get('/add', auth.isAuthenticated, controllers.product.addGet);
+router.get('/add', auth.isAuthenticated, addGet);
 // the multer upload is a middlware and signle method specify that only 1 file will be provided
-router.post(
-  '/add',
-  auth.isAuthenticated,
-  upload.single('image'),
-  controllers.product.addPost
-);
-
-router.get('/edit/:id', auth.isAuthenticated, controllers.product.editGet);
+router.post('/add', auth.isAuthenticated, upload.single('image'), addPost);
+router.get('/edit/:id', auth.isAuthenticated, editGet);
 router.post(
   '/edit/:id',
   auth.isAuthenticated,
   upload.single('image'),
-  controllers.product.editPost
+  editPost
 );
-
-router.get('/delete/:id', auth.isAuthenticated, controllers.product.deleteGet);
-router.post(
-  '/delete/:id',
-  auth.isAuthenticated,
-  controllers.product.deletePost
-);
-
-router.get('/buy/:id', auth.isAuthenticated, controllers.product.buyGet);
-router.post('/buy/:id', auth.isAuthenticated, controllers.product.buyPost);
+router.get('/delete/:id', auth.isAuthenticated, deleteGet);
+router.post('/delete/:id', auth.isAuthenticated, deletePost);
+router.get('/buy/:id', auth.isAuthenticated, buyGet);
+router.post('/buy/:id', auth.isAuthenticated, buyPost);
 
 module.exports = router;

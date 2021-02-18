@@ -4,13 +4,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
-const homeRoutes = require('../routes/home');
-const userRoutes = require('../routes/user');
-const productRoutes = require('../routes/product');
-const categoryRoutes = require('../routes/category');
 
 module.exports = (app) => {
-  //Configure middleware for parsing form data
   app.use(bodyParser.urlencoded({ extended: true }));
 
   app.use(cookieParser());
@@ -31,16 +26,10 @@ module.exports = (app) => {
     next();
   });
 
-  //Configure "public" folder
   app.use((req, res, next) => {
     if (req.url.startsWith('/content')) {
       req.url = req.url.replace('/content', '');
     }
     next();
   }, express.static(path.normalize(path.join(__dirname, '..', 'content'))));
-
-  app.use('/', homeRoutes);
-  app.use('/user', userRoutes);
-  app.use('/product', productRoutes);
-  app.use('/category', categoryRoutes);
 };
