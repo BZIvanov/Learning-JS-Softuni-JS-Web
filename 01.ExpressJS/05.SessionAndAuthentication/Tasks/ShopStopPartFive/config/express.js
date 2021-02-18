@@ -1,36 +1,25 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const Handlebars = require('handlebars');
-const handlebars = require('express-handlebars');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
-const {
-  allowInsecurePrototypeAccess,
-} = require('@handlebars/allow-prototype-access');
 const homeRoutes = require('../routes/home');
 const userRoutes = require('../routes/user');
 const productRoutes = require('../routes/product');
 const categoryRoutes = require('../routes/category');
 
-module.exports = (app, config) => {
-  app.engine(
-    '.hbs',
-    handlebars({
-      defaultLayout: 'layout',
-      extname: '.hbs',
-      handlebars: allowInsecurePrototypeAccess(Handlebars),
-    })
-  );
-  app.set('view engine', '.hbs');
-
+module.exports = (app) => {
   //Configure middleware for parsing form data
   app.use(bodyParser.urlencoded({ extended: true }));
 
   app.use(cookieParser());
   app.use(
-    session({ secret: 'S3cr3t', saveUninitialized: false, resave: false })
+    session({
+      secret: process.env.SESSION_SECRET,
+      saveUninitialized: false,
+      resave: false,
+    })
   );
   app.use(passport.initialize());
   app.use(passport.session());
@@ -48,7 +37,7 @@ module.exports = (app, config) => {
       req.url = req.url.replace('/content', '');
     }
     next();
-  }, express.static(path.normalize(path.join(config.rootPath, 'content'))));
+  }, express.static(path.normalize(path.join(__dirname, '..', 'content'))));
 
   app.use('/', homeRoutes);
   app.use('/user', userRoutes);

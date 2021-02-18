@@ -1,11 +1,9 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 
-const categorySchema = mongoose.Schema({
-  name: { type: mongoose.Schema.Types.String, required: true, unique: true },
-  creator: { type: mongoose.Schema.ObjectId, ref: 'User', required: true },
-  // ref propert is reference to another Collection in the database
-  products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+const categorySchema = Schema({
+  name: { type: String, required: true, unique: true },
+  creator: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
 });
 
-const Category = mongoose.model('Category', categorySchema);
-module.exports = Category;
+module.exports = model('Category', categorySchema);
