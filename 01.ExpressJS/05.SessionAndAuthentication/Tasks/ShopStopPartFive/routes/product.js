@@ -10,7 +10,7 @@ const {
   buyGet,
   buyPost,
 } = require('../controllers/product');
-const auth = require('../config/auth');
+const auth = require('../middlewares/auth');
 
 // this is configuration for multer  storaging file
 const storage = multer.diskStorage({

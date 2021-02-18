@@ -4,51 +4,57 @@ module.exports.registerGet = (req, res) => {
   res.render('user/register');
 };
 
-module.exports.registerPost = (req, res) => {
+module.exports.registerPost = async (req, res) => {
   const user = { ...req.body };
 
   if (user.password && user.password !== user.confirmedPassword) {
-    res.render('user/register', { error: 'Passwords do not match' });
-    return;
+    return res.render('user/register', { error: 'Passwords do not match' });
   }
 
-  User.create(user)
-    .then((user) => {
-      req.logIn(user, (error, user) => {
-        if (error) {
-          res.render('user/register', { error: 'Authenticaton not working!' });
-          return;
-        }
+  try {
+    const newUser = await User.create(user);
 
-        res.redirect('/');
-      });
-    })
-    .catch((error) => {
-      res.render('user/register', { error });
+    req.logIn(newUser, (error, user) => {
+      if (error) {
+        return res.render('user/register', {
+          error: 'Authenticaton not working!',
+        });
+      }
+
+      res.redirect('/');
     });
+  } catch (error) {
+    console.log(error);
+    res.render('user/register', { error });
+  }
 };
 
 module.exports.loginGet = (req, res) => {
   res.render('user/login');
 };
 
-module.exports.loginPost = (req, res) => {
+module.exports.loginPost = async (req, res) => {
   const { username, password } = req.body;
 
-  User.findOne({ username }).then((user) => {
-    if (!user || !user.authenticate(password)) {
-      res.render('user/login', { error: 'Invalid credentials!' });
-    } else {
-      req.logIn(user, (error, user) => {
-        if (error) {
-          res.render('user/login', { error: 'Authenticaton not working!' });
-          return;
-        }
+  try {
+    const user = await User.findOne({ username });
 
-        res.redirect('/');
-      });
+    if (!user || !user.isPasswordCorrect(password)) {
+      return res.render('user/login', { error: 'Invalid credentials!' });
     }
-  });
+
+    req.logIn(user, (error, user) => {
+      if (error) {
+        return res.render('user/login', {
+          error: 'Authenticaton not working!',
+        });
+      }
+
+      res.redirect('/');
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 module.exports.logout = (req, res) => {

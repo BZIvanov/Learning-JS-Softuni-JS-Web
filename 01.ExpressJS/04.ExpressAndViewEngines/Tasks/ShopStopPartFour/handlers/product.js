@@ -87,11 +87,9 @@ module.exports.editPost = async (req, res) => {
       await nextCategory.save();
 
       product.category = editedProduct.category;
-      await product.save();
-    } else {
-      await product.save();
     }
 
+    await product.save();
     res.redirect(
       `/?success=${encodeURIComponent('Product was edited successfully!')}`
     );
@@ -152,6 +150,12 @@ module.exports.buyGet = async (req, res) => {
   const { id } = req.params;
   try {
     const product = await Product.findById(id);
+    if (!product) {
+      return res.redirect(
+        `/?error=${encodeURIComponent('Product was not found!')}`
+      );
+    }
+
     res.render('product/buy', { product });
   } catch (err) {
     console.log(err);

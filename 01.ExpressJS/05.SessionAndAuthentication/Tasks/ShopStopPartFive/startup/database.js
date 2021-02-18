@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { seedAdminUser } = require('../models/User');
 
 module.exports = () => {
   mongoose.connect(process.env.DB_URI, {
@@ -15,6 +16,8 @@ module.exports = () => {
       console.log(err);
       return;
     }
+
+    seedAdminUser();
     console.log('Connected!');
   });
 
@@ -22,6 +25,4 @@ module.exports = () => {
     console.log(err);
     return;
   });
-
-  require('../models/User').seedAdminUser();
 };

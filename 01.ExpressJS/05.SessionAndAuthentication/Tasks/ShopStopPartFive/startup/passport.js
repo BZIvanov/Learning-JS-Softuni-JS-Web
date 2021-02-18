@@ -9,7 +9,7 @@ module.exports = () => {
         if (!user) {
           return done(null, false);
         }
-        if (!user.authenticate(password)) {
+        if (!user.isPasswordCorrect(password)) {
           return done(null, false);
         }
         return done(null, user);

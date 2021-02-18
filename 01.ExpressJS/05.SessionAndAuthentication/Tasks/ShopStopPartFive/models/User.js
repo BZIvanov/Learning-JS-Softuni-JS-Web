@@ -34,7 +34,10 @@ const userSchema = Schema({
       message: 'Gender should be either "Male" or "Female".',
     },
   },
-  roles: [{ type: String }],
+  roles: {
+    type: [{ type: String, enum: ['Admin', 'User'] }],
+    default: ['User'],
+  },
   boughtProducts: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
   createdProducts: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
   createdCategories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
@@ -47,7 +50,7 @@ userSchema.pre('save', function () {
 });
 
 userSchema.method({
-  authenticate: function (incomingPassword) {
+  isPasswordCorrect: function (incomingPassword) {
     return (
       generateHashedPassword(this.salt, incomingPassword) === this.password
     );
@@ -55,10 +58,11 @@ userSchema.method({
 });
 
 const User = model('User', userSchema);
-module.exports = User;
+module.exports.User = User;
 
-module.exports.seedAdminUser = () => {
-  User.find().then((users) => {
+module.exports.seedAdminUser = async () => {
+  try {
+    const users = await User.find();
     if (users.length === 0) {
       User.create({
         username: 'admin',
@@ -70,7 +74,9 @@ module.exports.seedAdminUser = () => {
         roles: ['Admin'],
       });
     }
-  });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 function generateHashedPassword(salt, password) {

@@ -4,25 +4,32 @@ module.exports.addGet = (req, res) => {
   res.render('category/add');
 };
 
-module.exports.addPost = (req, res) => {
-  const category = req.body;
+module.exports.addPost = async (req, res) => {
+  const { name } = req.body;
+  const category = { name };
   category.creator = req.user._id;
 
-  Category.create(category).then(() => {
+  try {
+    await Category.create(category);
     res.redirect('/');
-  });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-module.exports.productByCategory = (req, res) => {
-  const categoryName = req.params.category;
+module.exports.productByCategory = async (req, res) => {
+  const { category: categoryName } = req.params;
 
-  Category.findOne({ name: categoryName })
-    .populate('products')
-    .then((category) => {
-      if (!category) {
-        res.sendStatus(404);
-        return;
-      }
-      res.render('category/products', { category });
-    });
+  try {
+    const category = await Category.findOne({ name: categoryName }).populate(
+      'products'
+    );
+    if (!category) {
+      return res.sendStatus(404);
+    }
+
+    res.render('category/products', { category });
+  } catch (err) {
+    console.log(err);
+  }
 };

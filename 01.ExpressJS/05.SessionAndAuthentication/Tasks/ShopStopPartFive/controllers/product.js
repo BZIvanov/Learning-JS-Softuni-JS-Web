@@ -1,11 +1,23 @@
 const fs = require('fs');
+const path = require('path');
 const Product = require('../models/Product');
 const Category = require('../models/Category');
 
-module.exports.addGet = (req, res) => {
-  Category.find().then((categories) => {
+module.exports.addGet = async (req, res) => {
+  try {
+    const categories = await Category.find();
+    if (categories.length < 1) {
+      return res.redirect(
+        `/?error=${encodeURIComponent(
+          'Please create at least 1 category first.'
+        )}`
+      );
+    }
+
     res.render('product/add', { categories });
-  });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 module.exports.addPost = async (req, res) => {
@@ -14,39 +26,45 @@ module.exports.addPost = async (req, res) => {
   productObj.image = '\\' + req.file.path;
   productObj.creator = req.user._id;
 
-  const product = await Product.create(productObj);
-  const category = await Category.findById(product.category);
-  category.products.push(product._id);
-  category.save();
-  res.redirect('/');
+  try {
+    const product = await Product.create(productObj);
+    const category = await Category.findById(product.category);
+    category.products.push(product._id);
+    await category.save();
+    res.redirect('/');
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-module.exports.editGet = (req, res) => {
-  Product.findById(req.params.id).then((product) => {
+module.exports.editGet = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await Product.findById(id);
     if (!product) {
-      res.status(404).send('Not found');
-      return;
+      return res.status(404).send('Not found');
     }
 
     if (
       product.creator.equals(req.user._id) ||
       req.user.roles.indexOf('Admin') >= 0
     ) {
-      Category.find().then((categories) => {
-        res.render('product/edit', {
-          product,
-          categories,
-        });
+      const categories = await Category.find();
+      res.render('product/edit', {
+        product,
+        categories,
       });
     } else {
-      res.redirect(
+      return res.redirect(
         `/?error=${encodeURIComponent(
           'You do not have rights to edit this product!'
         )}`
       );
-      return;
     }
-  });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 module.exports.editPost = async (req, res) => {
@@ -54,8 +72,9 @@ module.exports.editPost = async (req, res) => {
 
   const product = await Product.findById(req.params.id);
   if (!product) {
-    res.redirect(`/?error=${encodeURIComponent('Product was not found!')}`);
-    return;
+    return res.redirect(
+      `/?error=${encodeURIComponent('Product was not found!')}`
+    );
   }
 
   if (
@@ -69,164 +88,153 @@ module.exports.editPost = async (req, res) => {
       product.image = '\\' + req.file.path;
     }
 
-    // First we check if the category is changed.
     if (product.category.toString() !== editedProduct.category) {
-      // If so find the "current" and "next" category.
-      Category.findById(product.category).then((currentCategory) => {
-        Category.findById(editedProduct.category).then((nextCategory) => {
-          const index = currentCategory.products.indexOf(product._id);
-          if (index >= 0) {
-            // Remove product specified from current category's list of products
-            currentCategory.products.splice(index, 1);
-          }
-          currentCategory.save();
-          // Add product's refference to the "new" category.
-          nextCategory.products.push(product._id);
-          nextCategory.save();
+      const currentCategory = await Category.findById(product.category);
+      const nextCategory = await Category.findById(editedProduct.category);
 
-          product.category = editedProduct.category;
+      const index = currentCategory.products.indexOf(product._id);
+      currentCategory.products.splice(index, 1);
+      await currentCategory.save();
 
-          product.save().then(() => {
-            res.redirect(
-              `/?success=${encodeURIComponent(
-                'Product was edited successfully!'
-              )}`
-            );
-          });
-        });
-      });
-    } else {
-      product.save().then(() => {
-        res.redirect(
-          `/?success=${encodeURIComponent('Product was edited successfully!')}`
-        );
-      });
+      nextCategory.products.push(product._id);
+      await nextCategory.save();
+
+      product.category = editedProduct.category;
     }
+
+    await product.save();
+    res.redirect(
+      `/?success=${encodeURIComponent('Product was edited successfully!')}`
+    );
   } else {
-    product.save().then(() => {
-      res.redirect(
-        `/?success=${encodeURIComponent('Product was edited successfully!')}`
-      );
-    });
+    res.redirect(
+      `/?error=${encodeURIComponent(
+        'You are not allowed to edit this product!'
+      )}`
+    );
   }
 };
 
-module.exports.deleteGet = (req, res) => {
-  Product.findById(req.params.id)
-    .then((product) => {
-      if (!product) {
-        res.redirect(`/?error=${encodeURIComponent('Product was not found!')}`);
-        return;
-      }
+module.exports.deleteGet = async (req, res) => {
+  const { id } = req.params;
 
-      if (
-        product.creator.equals(req.user._id) ||
-        req.user.roles.indexOf('Admin') >= 0
-      ) {
-        res.render('product/delete', {
-          product,
-        });
-      } else {
-        res.redirect(
-          `/?error=${encodeURIComponent(
-            'You do not have rights to delete this!'
-          )}`
-        );
-        return;
-      }
-    })
-    .catch(() => {
-      res.sendStatus(404);
-    });
-};
+  try {
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.redirect(
+        `/?error=${encodeURIComponent('Product was not found!')}`
+      );
+    }
 
-module.exports.deletePost = (req, res) => {
-  const id = req.params.id;
-  const creator = req.user._id;
-
-  Product.findOneAndDelete({ _id: id, creator }).then((removedProduct) => {
-    Category.updateOne(
-      { _id: removedProduct.category },
-      { $pull: { products: removedProduct._id } }
-    )
-      .then(() => {
-        const imageName = removedProduct.image.split('\\').pop();
-
-        fs.unlink(`./content/images/${imageName}`, (err) => {
-          if (err) {
-            console.log('Delete error', err);
-            res.sendStatus(404);
-            return;
-          }
-
-          const boughtProductsIndex = req.user.boughtProducts.indexOf(id);
-          const createdProductsIndex = req.user.createdProducts.indexOf(id);
-
-          if (boughtProductsIndex > -1) {
-            req.user.boughtProducts.splice(boughtProductsIndex, 1);
-          }
-
-          if (createdProductsIndex > -1) {
-            req.user.createdProducts.splice(createdProductsIndex, 1);
-          }
-
-          req.user.save().then(() => {
-            res.redirect(
-              `/?success=${encodeURIComponent(
-                'Product was deleted successfully!'
-              )}`
-            );
-          });
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.redirect(`/?error=${encodeURIComponent('Product was not found!')}`);
-      });
-  });
-};
-
-module.exports.buyGet = (req, res) => {
-  Product.findById(req.params.id)
-    .then((product) => {
-      if (!product) {
-        res.redirect(`/?error=${encodeURIComponent('Product was not found!')}`);
-        return;
-      }
-
-      if (product.buyer) {
-        res.redirect(
-          `/?error=${encodeURIComponent('Product was already bought!')}`
-        );
-        return;
-      }
-
-      res.render('product/buy', {
+    if (
+      product.creator.equals(req.user._id) ||
+      req.user.roles.indexOf('Admin') >= 0
+    ) {
+      res.render('product/delete', {
         product,
       });
-    })
-    .catch(() => {
-      res.sendStatus(404);
-    });
+    } else {
+      res.redirect(
+        `/?error=${encodeURIComponent(
+          'You do not have rights to delete this!'
+        )}`
+      );
+    }
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(404);
+  }
 };
 
-module.exports.buyPost = (req, res) => {
-  const productId = req.params.id;
+module.exports.deletePost = async (req, res) => {
+  const { id } = req.params;
+  const creator = req.user._id;
 
-  Product.findById(productId).then((product) => {
-    if (product.buyer) {
+  const filter = {
+    _id: id,
+  };
+  if (req.user.roles.indexOf('Admin') === -1) {
+    filter.creator = creator;
+  }
+
+  try {
+    const removedProduct = await Product.findOneAndDelete(filter);
+    await Category.updateOne(
+      { _id: removedProduct.category },
+      { $pull: { products: removedProduct._id } }
+    );
+
+    const imagePath = path.join(__dirname, '..', removedProduct.image);
+    fs.unlink(imagePath, async (err) => {
+      if (err) {
+        console.log('Delete error', err);
+        return res.sendStatus(404);
+      }
+
+      const boughtProductsIndex = req.user.boughtProducts.indexOf(id);
+      const createdProductsIndex = req.user.createdProducts.indexOf(id);
+      if (boughtProductsIndex > -1) {
+        req.user.boughtProducts.splice(boughtProductsIndex, 1);
+      }
+      if (createdProductsIndex > -1) {
+        req.user.createdProducts.splice(createdProductsIndex, 1);
+      }
+
+      await req.user.save();
       res.redirect(
+        `/?success=${encodeURIComponent('Product was deleted successfully!')}`
+      );
+    });
+  } catch (err) {
+    console.log(err);
+    res.redirect(
+      `/?error=${encodeURIComponent('Product deletion has failed!')}`
+    );
+  }
+};
+
+module.exports.buyGet = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.redirect(
+        `/?error=${encodeURIComponent('Product was not found!')}`
+      );
+    }
+
+    if (product.buyer) {
+      return res.redirect(
         `/?error=${encodeURIComponent('Product was already bought!')}`
       );
-      return;
+    }
+
+    res.render('product/buy', { product });
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(404);
+  }
+};
+
+module.exports.buyPost = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await Product.findById(id);
+    if (product.buyer) {
+      return res.redirect(
+        `/?error=${encodeURIComponent('Product was already bought!')}`
+      );
     }
 
     product.buyer = req.user._id;
-    product.save().then(() => {
-      req.user.boughtProducts.push(productId);
-      req.user.save().then(() => {
-        res.redirect('/');
-      });
-    });
-  });
+    await product.save();
+    req.user.boughtProducts.push(id);
+    await req.user.save();
+
+    res.redirect('/');
+  } catch (err) {
+    console.log(err);
+  }
 };
