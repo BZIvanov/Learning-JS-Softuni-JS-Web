@@ -7,7 +7,7 @@ const {
   allowInsecurePrototypeAccess,
 } = require('@handlebars/allow-prototype-access');
 
-module.exports = (app, config) => {
+module.exports = (app) => {
   app.engine(
     '.hbs',
     handlebars({
@@ -27,5 +27,5 @@ module.exports = (app, config) => {
       req.url = req.url.replace('/content', '');
     }
     next();
-  }, express.static(path.normalize(path.join(config.rootPath, 'content'))));
+  }, express.static(path.normalize(path.join(__dirname, '..', 'content'))));
 };

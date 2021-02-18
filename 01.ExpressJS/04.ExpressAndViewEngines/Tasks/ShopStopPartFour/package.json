@@ -4,23 +4,25 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "css": "gulp minify-css",
+    "start": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@handlebars/allow-prototype-access": "^1.0.3",
-    "body-parser": "1.18.3",
-    "express": "4.16.4",
-    "express-handlebars": "^4.0.4",
-    "gulp": "4.0.0",
-    "gulp-clean-css": "4.0.0",
-    "gulp-rename": "1.4.0",
-    "handlebars": "^4.7.6",
-    "mongoose": "5.4.0",
-    "multer": "1.4.1",
-    "multiparty": "4.2.1",
-    "shortid": "2.2.14"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.2.1",
+    "handlebars": "^4.7.7",
+    "mongoose": "^5.11.17",
+    "multer": "^1.4.2",
+    "shortid": "^2.2.16"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-rename": "^2.0.0",
+    "nodemon": "^2.0.7"
   }
 }

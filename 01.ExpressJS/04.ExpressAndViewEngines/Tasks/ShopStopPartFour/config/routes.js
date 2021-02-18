@@ -25,4 +25,5 @@ module.exports = (app) => {
   );
 
   app.get('/product/buy/:id', handlers.product.buyGet);
+  app.post('/product/buy/:id', handlers.product.buyPost);
 };

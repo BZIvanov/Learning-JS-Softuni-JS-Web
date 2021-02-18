@@ -2,7 +2,7 @@
 <div class="cards">
   {{#each category.products}}
   <div class="product-card">
-    <img class="product-img" src="{{this.image}}">
+    <img class="product-img" src="../../{{this.image}}">
     <h2>{{this.name}}</h2>
     <p>{{this.description}}</p>
     <a class="btn btn-sm btn-success" href="/product/buy/{{this._id}}">Buy</a>

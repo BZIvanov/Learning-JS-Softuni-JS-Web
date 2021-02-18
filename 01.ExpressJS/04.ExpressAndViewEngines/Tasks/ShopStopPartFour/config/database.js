@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 
-module.exports = (config) => {
-  mongoose.connect(config.connectionString, {
+module.exports = () => {
+  mongoose.connect(process.env.DB_URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
   });
 
   const database = mongoose.connection;
@@ -20,7 +22,4 @@ module.exports = (config) => {
     console.log(err);
     return;
   });
-
-  require('../models/Product');
-  require('../models/Category');
 };
