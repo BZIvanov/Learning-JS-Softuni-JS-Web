@@ -4,23 +4,29 @@ module.exports.addGet = (req, res) => {
   res.render('category/add');
 };
 
-module.exports.addPost = (req, res) => {
+module.exports.addPost = async (req, res) => {
   const { name } = req.body;
-  Category.create({ name }).then(() => {
+  try {
+    await Category.create({ name });
     res.redirect('/');
-  });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-module.exports.productByCategory = (req, res) => {
-  const { category } = req.params;
+module.exports.productByCategory = async (req, res) => {
+  const { category: categoryName } = req.params;
 
-  Category.findOne({ name: category })
-    .populate('products')
-    .then((category) => {
-      if (!category) {
-        res.sendStatus(404);
-        return;
-      }
-      res.render('category/products', { category });
-    });
+  try {
+    const category = await Category.findOne({ name: categoryName }).populate(
+      'products'
+    );
+    if (!category) {
+      return res.sendStatus(404);
+    }
+
+    res.render('category/products', { category });
+  } catch (err) {
+    console.log(err);
+  }
 };

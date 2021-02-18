@@ -1,30 +1,29 @@
 const Product = require('../models/Product');
 
-module.exports.index = (req, res) => {
-  let queryData = req.query;
+module.exports.index = async (req, res) => {
+  const { query, success, error } = req.query;
 
-  Product.find()
-    .populate('category')
-    .then((products) => {
-      if (queryData.query) {
-        products = products.filter((p) =>
-          p.name.toLowerCase().includes(queryData.query.toLowerCase())
-        );
-      }
+  try {
+    let products = await Product.find().populate('category');
+    if (query) {
+      products = products.filter((p) =>
+        p.name.toLowerCase().includes(query.toLowerCase())
+      );
+    }
 
-      let data = {
-        products,
-      };
-      if (req.query.error) {
-        data.error = req.query.error;
-      } else if (req.query.success) {
-        data.success = req.query.success;
-      }
+    const data = {
+      products,
+    };
+    if (error) {
+      data.error = error;
+    } else if (success) {
+      data.success = success;
+    }
 
-      res.render('home/index', {
-        products: data.products,
-        error: data.error,
-        success: data.success,
-      });
+    res.render('home/index', {
+      ...data,
     });
+  } catch (err) {
+    console.log(err);
+  }
 };
