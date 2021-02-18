@@ -3,9 +3,10 @@ const express = require('express');
 
 const app = express();
 
-require('./config/database')();
-require('./config/express')(app);
-require('./config/routes')(app);
+require('./startup/database')();
+require('./startup/handlebars')(app);
+require('./startup/express')(app);
+require('./startup/routes')(app);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
