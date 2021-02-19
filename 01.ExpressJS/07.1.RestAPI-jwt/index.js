@@ -2,8 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 
-require('./startup/error-handling')();
-require('./startup/db')();
+require('./startup/error-handling');
+require('./startup/db');
 require('./startup/express')(app);
 
 const PORT = process.env.PORT || 3000;

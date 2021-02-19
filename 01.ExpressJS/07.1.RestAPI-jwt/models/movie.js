@@ -1,9 +1,12 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
 
-const movieSchema = Schema({
-  name: { type: String, required: true, minlength: 5, maxlength: 50 },
-});
+const movieSchema = Schema(
+  {
+    name: { type: String, required: true, minlength: 5, maxlength: 50 },
+  },
+  { timestamps: true }
+);
 
 const Movie = new model('Movie', movieSchema);
 

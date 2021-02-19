@@ -3,29 +3,34 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 
-const userSchema = Schema({
-  name: { type: String, required: true, minlength: 3, maxlength: 20 },
-  email: {
-    type: String,
-    required: true,
-    minlength: 5,
-    maxlength: 50,
-    unique: true,
+const userSchema = Schema(
+  {
+    name: { type: String, required: true, minlength: 3, maxlength: 20 },
+    email: {
+      type: String,
+      required: true,
+      minlength: 5,
+      maxlength: 50,
+      unique: true,
+    },
+    password: { type: String, required: true, minlength: 5, maxlength: 1024 },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user',
+    },
   },
-  password: { type: String, required: true, minlength: 5, maxlength: 1024 },
-  role: {
-    type: String,
-    enum: ['user', 'admin'],
-    default: 'user',
-  },
-  createdAt: { type: Date, default: Date.now },
-});
+  { timestamps: true }
+);
 
-userSchema.pre('save', async function () {
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+
   try {
     this.password = await bcrypt.hash(this.password, 8);
+    next();
   } catch (err) {
-    throw new Error('Failed while user password hashing.');
+    next(err);
   }
 });
 
