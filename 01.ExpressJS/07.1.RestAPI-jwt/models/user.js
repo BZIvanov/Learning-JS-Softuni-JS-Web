@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 
-const userSchema = Schema(
+const userSchema = new Schema(
   {
     name: { type: String, required: true, minlength: 3, maxlength: 20 },
     email: {
@@ -50,7 +50,7 @@ userSchema.methods.isPasswordCorrect = async function (incomingPassword) {
   }
 };
 
-const User = new model('User', userSchema);
+const User = model('User', userSchema);
 
 function validateRegister(user) {
   const schema = Joi.object({
