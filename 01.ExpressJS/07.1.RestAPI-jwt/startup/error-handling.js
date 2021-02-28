@@ -1,9 +1,13 @@
-process.on('uncaughtException', (err) => {
-  console.log('===UNCAUGHT EXCEPTION error', err);
-  process.exit(1);
-});
+module.exports = function (server) {
+  process.on('uncaughtException', (err) => {
+    console.log('===UNCAUGHT EXCEPTION error', err);
 
-process.on('unhandledRejection', (err) => {
-  console.log('===UNHANDLED REJECTION error', err);
-  process.exit(1);
-});
+    server.close(() => process.exit(1));
+  });
+
+  process.on('unhandledRejection', (err) => {
+    console.log('===UNHANDLED REJECTION error', err);
+
+    server.close(() => process.exit(1));
+  });
+};
