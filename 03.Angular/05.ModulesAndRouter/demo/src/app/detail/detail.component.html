@@ -1,8 +1,0 @@
-<ng-template #todoDetail>
-  <input type="text" [value]="todo.title">
-</ng-template>
-<ng-template #isLoading>Loading...</ng-template>
-
-<div>
-  <ng-container *ngIf="todo then todoDetail; else isLoading"></ng-container>
-</div>

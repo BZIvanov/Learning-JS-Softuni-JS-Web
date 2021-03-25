@@ -1,5 +1,0 @@
-<input #text type="text">
-<div *ngFor="let todo of todos" [ngClass]="{ 'completed': todo.completed }">
-  <span>{{todo.title}}</span>
-  <a [routerLink]="['/todo/detail', todo.id]" [queryParams]="{ test: 'test' }">Edit</a>
-</div>
