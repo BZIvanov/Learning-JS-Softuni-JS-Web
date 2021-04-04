@@ -6,8 +6,7 @@
   "engine": ">=7.6",
   "scripts": {
     "start": "node index.js",
-    "debug": "nodemon --inspect-brk index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "debug": "nodemon --inspect-brk index.js"
   },
   "keywords": [],
   "author": "",

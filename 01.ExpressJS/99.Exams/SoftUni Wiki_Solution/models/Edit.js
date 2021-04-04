@@ -1,12 +1,11 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 
-const editSchema = new mongoose.Schema({
+const editSchema = new Schema({
   author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   creationDate: { type: Date, default: Date.now, required: true },
-  title: { type: Schema.Types.String },
+  title: { type: String },
   content: { type: String, required: true },
   article: { type: Schema.Types.ObjectId, ref: 'Article' },
 });
 
-const Edit = mongoose.model('Edit', editSchema);
-module.exports = Edit;
+module.exports = model('Edit', editSchema);

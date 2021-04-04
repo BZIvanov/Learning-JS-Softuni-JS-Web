@@ -1,15 +1,12 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const Types = Schema.Types;
+const { Schema, model } = require('mongoose');
 
-const memeSchema = Schema({
-  title: Types.String,
-  memeSrc: Types.String,
-  description: Types.String,
-  privacy: Types.String,
-  dataStamp: Types.Number,
-  genreId: Types.String,
+const memeSchema = new Schema({
+  title: String,
+  memeSrc: String,
+  description: String,
+  privacy: String,
+  dataStamp: Number,
+  genreId: String,
 });
 
-const Meme = mongoose.model('Meme', memeSchema);
-module.exports = Meme;
+module.exports = model('Meme', memeSchema);

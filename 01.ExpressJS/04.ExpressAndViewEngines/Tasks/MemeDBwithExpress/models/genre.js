@@ -1,10 +1,8 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { Schema, model } = require('mongoose');
 
-const genreSchema = Schema({
-  title: Schema.Types.String,
+const genreSchema = new Schema({
+  title: String,
   memes: [{ type: Schema.Types.ObjectId, ref: 'Meme' }],
 });
 
-const Genre = mongoose.model('Genre', genreSchema);
-module.exports = Genre;
+module.exports = model('Genre', genreSchema);

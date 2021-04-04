@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 const encryption = require('../util/encryption');
 
-const userSchema = new mongoose.Schema({
-  email: { type: Schema.Types.String, required: true, unique: true },
-  hashedPass: { type: Schema.Types.String, required: true },
-  salt: { type: Schema.Types.String, required: true },
-  roles: [{ type: Schema.Types.String }],
+const userSchema = new Schema({
+  email: { type: String, required: true, unique: true },
+  hashedPass: { type: String, required: true },
+  salt: { type: String, required: true },
+  roles: [{ type: String }],
   edits: [{ type: Schema.Types.ObjectId, ref: 'Edit' }],
 });
 
@@ -20,7 +20,7 @@ userSchema.method({
   },
 });
 
-const User = mongoose.model('User', userSchema);
+const User = model('User', userSchema);
 
 User.seedAdminUser = async () => {
   try {

@@ -14,7 +14,7 @@ module.exports = {
       .then(() => {
         res.redirect('/car/all');
       })
-      .catch((err) => {
+      .catch(() => {
         reqCar.error = 'Please fill all fields!';
         res.render('car/add', reqCar);
       });
@@ -27,7 +27,7 @@ module.exports = {
     });
   },
   rentCarGet: (req, res) => {
-    let carId = req.params.id;
+    const carId = req.params.id;
 
     Car.findById(carId).then((foundCar) => {
       res.render('car/rent', {
@@ -38,15 +38,16 @@ module.exports = {
     });
   },
   rentCarPost: async (req, res) => {
-    let carId = req.params.id;
-    let days = req.body.days;
+    const carId = req.params.id;
+    const { days } = req.body;
 
     let rent = await Rent.create({
       days,
       car: carId,
       owner: req.user._id,
     });
-    let car = await Car.findByIdAndUpdate(
+
+    await Car.findByIdAndUpdate(
       { _id: carId },
       { $set: { isRented: true, expiresOn: rent.days } }
     );
@@ -54,7 +55,7 @@ module.exports = {
     res.redirect('/user/rents');
   },
   editCarGet: (req, res) => {
-    let carId = req.params.id;
+    const carId = req.params.id;
 
     Car.findById(carId).then((car) => {
       res.render('car/edit', {
@@ -65,8 +66,8 @@ module.exports = {
     });
   },
   editCarPost: async (req, res) => {
-    let carId = req.params.id;
-    let editedCarBody = req.body;
+    const carId = req.params.id;
+    const editedCarBody = req.body;
 
     await Car.findById(carId).then((car) => {
       car.model = editedCarBody.model;
@@ -82,7 +83,7 @@ module.exports = {
     });
   },
   searchModel: (req, res) => {
-    let queryData = req.query;
+    const queryData = req.query;
 
     Car.find({ isRented: false }).then((cars) => {
       cars = cars.filter((x) =>

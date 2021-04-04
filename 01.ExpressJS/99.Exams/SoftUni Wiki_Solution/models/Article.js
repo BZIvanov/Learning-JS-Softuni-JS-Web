@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 
-const articleSchema = new mongoose.Schema({
+const articleSchema = new Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
   isLocked: { type: Boolean, default: false, required: true },
@@ -8,5 +8,4 @@ const articleSchema = new mongoose.Schema({
   creationDate: { type: Date, required: true, default: Date.now },
 });
 
-const Article = mongoose.model('Article', articleSchema);
-module.exports = Article;
+module.exports = model('Article', articleSchema);
