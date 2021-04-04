@@ -9,13 +9,14 @@ module.exports = (config) => {
   const database = mongoose.connection;
   database.once('open', (err) => {
     if (err) throw err;
+
     User.seedAdmin()
       .then(() => {
         console.log('Database ready!');
       })
-      .catch((reason) => {
+      .catch((err) => {
         console.log('Something went wrong');
-        console.log(reason);
+        console.log(err);
       });
   });
 };

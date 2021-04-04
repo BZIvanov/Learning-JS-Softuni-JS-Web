@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 const encryption = require('./../utilities/encryption');
 
-let userSchema = mongoose.Schema(
+let userSchema = Schema(
   {
     email: {
       type: String,
@@ -16,16 +16,12 @@ let userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    roles: [
-      {
-        type: mongoose.Schema.Types.String,
-      },
-    ],
+    roles: [{ type: String }],
     salt: {
       type: String,
       required: true,
     },
-    articles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
+    articles: [{ type: Schema.Types.ObjectId, ref: 'Article' }],
   },
   {
     usePushEach: true,
@@ -34,9 +30,8 @@ let userSchema = mongoose.Schema(
 
 userSchema.method({
   authenticate: function (password) {
-    let inputPasswordHash = encryption.hashPassword(password, this.salt);
-    let isSamePasswordHash = inputPasswordHash === this.passwordHash;
-    return isSamePasswordHash;
+    const inputPasswordHash = encryption.hashPassword(password, this.salt);
+    return inputPasswordHash === this.passwordHash;
   },
 
   isAuthor: function (article) {
@@ -44,9 +39,7 @@ userSchema.method({
       return false;
     }
 
-    let isAuthor = article.author.equals(this.id);
-
-    return isAuthor;
+    return article.author.equals(this.id);
   },
 
   isInRole: function (role) {
@@ -54,24 +47,26 @@ userSchema.method({
   },
 });
 
-const User = mongoose.model('User', userSchema);
+const User = model('User', userSchema);
 
 module.exports = User;
 
 User.seedAdmin = async () => {
   try {
-    let users = await User.find();
+    const users = await User.find();
+
     if (users.length > 0) return;
+
     const salt = encryption.generateSalt();
     const passwordHash = encryption.hashPassword('admin', salt);
     return User.create({
       salt,
-      email: 'admin@adminov.com',
+      email: 'admin@admin.com',
       passwordHash,
-      fullName: 'Admin Adminov',
+      fullName: 'Admin Admin',
       roles: ['Admin'],
     });
-  } catch (e) {
-    console.log(e);
+  } catch (err) {
+    console.log(err);
   }
 };
