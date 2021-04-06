@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
 const User = require('../models/User');
 
 module.exports = (config) => {
