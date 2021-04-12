@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const jwt = require('express-jwt');
 const jwks = require('jwks-rsa');
 const guard = require('express-jwt-permissions')();
@@ -18,11 +19,13 @@ const jwtCheck = jwt({
 
 const app = express();
 
+app.use(cors());
+
 app.use(jwtCheck);
 
 app.get('/cakes', guard.check(['read:cakes']), (req, res) => {
   res.json({ cake1: 'Chocolate cake' });
 });
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 4000;
 app.listen(port);
