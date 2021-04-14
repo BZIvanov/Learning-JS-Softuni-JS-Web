@@ -2,22 +2,22 @@
 
 {{#if currentUser}}
 <form action="/threads/find" method="POST" class="form center-form">
-    <div class="form-group">
-        <input name="username" placeholder="username" value="{{otherUserUsername}}" class="input-field search" />
-        <button class="btn btn-search" type="submit">Search</button>
-    </div>
+  <div class="form-group">
+    <input name="username" placeholder="username" value="{{otherUserUsername}}" class="input-field search" />
+    <button class="btn btn-search" type="submit">Search</button>
+  </div>
 </form>
 {{/if}}
 
 {{#if isAdmin}}
 <h1>Threads</h1>
 <div class="threads-list">
-    <div class="thread">
-        <form action="/threads/remove/5c540d5fac257e190c076fc0" method="POST">
-            <h4>gosho pesho </h4>
-            <p>Fri Feb 01 2019 11:08:47 GMT+0200 (FLE Standard Time)</p>
-            <button class="btn">Delete</button>
-        </form>
-    </div>
+  <div class="thread">
+    <form action="/threads/remove/5c540d5fac257e190c076fc0" method="POST">
+      <h4>gosho pesho </h4>
+      <p>Fri Feb 01 2019 11:08:47 GMT+0200 (FLE Standard Time)</p>
+      <button class="btn">Delete</button>
+    </form>
+  </div>
 </div>
 {{/if}}

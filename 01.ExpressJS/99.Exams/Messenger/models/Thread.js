@@ -1,18 +1,18 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 
-const threadSchema = new mongoose.Schema({
+const threadSchema = new Schema({
   users: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'At least 2 users required'],
     },
   ],
   dateCreated: {
-    type: mongoose.Schema.Types.Date,
+    type: Date,
     required: true,
     default: Date.now,
   },
 });
 
-module.exports = mongoose.model('Thread', threadSchema);
+module.exports = model('Thread', threadSchema);

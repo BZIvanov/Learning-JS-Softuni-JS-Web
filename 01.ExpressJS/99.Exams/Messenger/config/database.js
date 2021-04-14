@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
-mongoose.Promise = global.Promise;
 
 module.exports = (config) => {
   mongoose.connect(config.dbPath, {
@@ -18,13 +17,12 @@ module.exports = (config) => {
       .then(() => {
         console.log('Database ready');
       })
-      .catch((reason) => {
-        console.log('Something went wrong');
-        console.log(reason);
+      .catch((err) => {
+        console.log('Something went wrong', err);
       });
   });
 
-  db.on('error', (reason) => {
-    console.log(reason);
+  db.on('error', (err) => {
+    console.log(err);
   });
 };

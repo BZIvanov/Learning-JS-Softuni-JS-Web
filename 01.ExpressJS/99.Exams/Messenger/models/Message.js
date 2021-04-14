@@ -1,19 +1,19 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 
-const messageSchema = new mongoose.Schema({
+const messageSchema = new Schema({
   content: {
-    type: mongoose.Schema.Types.String,
+    type: String,
     required: [true, 'Message require some content please :('],
   },
   user: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'User',
     required: [true, 'A message needs User(receiver)'],
   },
   thread: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     required: [true, 'A meesage needs the thread it belongs to'],
   },
 });
 
-module.exports = mongoose.model('Message', messageSchema);
+module.exports = model('Message', messageSchema);
