@@ -1,21 +1,21 @@
 <h1>Projects</h1>
 <form class="search" method="GET" action="/searchProject">
-    <label>Seach: </label>
-    <input type="text" name="name" value="{{result}}">
-    <input type="submit" value="Search">
+  <label>Seach: </label>
+  <input type="text" name="name" value="{{result}}">
+  <input type="submit" value="Search">
 </form>
 <div class="projects">
-    {{#each projects}}
-        <div class="project">
-            <h2>{{name}}</h2>
-            {{#if hasNoTeam}}
-                <h3>Team: No Team assigned</h3>
-            {{else}}
-                <h3>Team: {{team.name}}</h3>
-            {{/if}}
-            <p>Description: {{description}}</p>
-        </div>
-    {{else}}
-        <h2>No projects to display</h2>
-    {{/each}}
+  {{#each projects}}
+    <div class="project">
+      <h2>{{name}}</h2>
+      {{#if hasNoTeam}}
+        <h3>Team: No Team assigned</h3>
+      {{else}}
+        <h3>Team: {{team.name}}</h3>
+      {{/if}}
+      <p>Description: {{description}}</p>
+    </div>
+  {{else}}
+    <h2>No projects to display</h2>
+  {{/each}}
 </div>
