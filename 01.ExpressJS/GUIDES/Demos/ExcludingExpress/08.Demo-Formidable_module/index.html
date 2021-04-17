@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>File Upload</title>
-</head>
-<body>
-  <!-- if we don't work with files in our form we don't need enctype but in this case where we have input field to upload file this type of enctype is a must -->
-  <form method="POST" enctype="multipart/form-data" >
-    <div>
-      First Name
-      <input type="text" name="firstName" />
-    </div>
-    <div>
-      Password
-      <input type="password" name="password" />
-    </div>
-    <div>
-      File
-      <input type="file" name="myFile" />
-    </div>
-    
-    <input type="submit" />
-  </form>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>File Upload</title>
+  </head>
+  <body>
+    <!-- if we don't work with files in our form we don't need enctype but in this case where we have input field to upload file this type of enctype is a must -->
+    <form method="POST" enctype="multipart/form-data">
+      <div>
+        First Name
+        <input type="text" name="firstName" />
+      </div>
+      <div>
+        Password
+        <input type="password" name="password" />
+      </div>
+      <div>
+        File
+        <input type="file" name="myFile" />
+      </div>
+
+      <input type="submit" />
+    </form>
+  </body>
 </html>

@@ -2,8 +2,6 @@
 
 // load module http
 const http = require('http');
-// it is a usual practice to keep the port in a variable and use it below in the code
-const port = 5000;
 
 // http module has createServer method which is a special function which will handle all requests it receives. CreateServer method takes a function as parameter
 const server = http.createServer(frontController);
@@ -20,5 +18,7 @@ function frontController(req, res) {
   res.end();
 }
 
+// it is a usual practice to keep the port in a variable and use it below in the code
+const port = process.env.PORT || 5000;
 // we saved createServer in variable server so here we can call the method listen which will specify on which port our server will listen for requests
 server.listen(port, () => console.log(`Listening on port ${port}...`));

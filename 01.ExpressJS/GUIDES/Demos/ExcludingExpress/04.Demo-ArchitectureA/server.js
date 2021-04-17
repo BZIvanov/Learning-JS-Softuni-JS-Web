@@ -6,8 +6,6 @@ const homeHandler = require('./handlers/home');
 const aboutHandler = require('./handlers/about');
 const errorHandler = require('./handlers/error');
 
-const port = 5000;
-
 const server = http.createServer(frontController);
 
 function frontController(req, res) {
@@ -25,4 +23,5 @@ function frontController(req, res) {
   }
 }
 
+const port = process.env.PORT || 5000;
 server.listen(port, () => console.log(`Listening on port ${port}...`));

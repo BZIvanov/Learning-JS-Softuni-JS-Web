@@ -5,7 +5,6 @@
   "main": "index.js",
   "engine": "10.2.1",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "author": "BI",
