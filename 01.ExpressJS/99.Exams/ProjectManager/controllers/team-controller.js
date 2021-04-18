@@ -20,8 +20,8 @@ module.exports = {
 
   distributeTeamGet: async (req, res) => {
     try {
-      let users = await User.find({});
-      let teams = await Team.find({});
+      const users = await User.find({});
+      const teams = await Team.find({});
 
       res.render('teams/admin', { users, teams });
     } catch (err) {
@@ -32,11 +32,11 @@ module.exports = {
   distributeTeamPost: async (req, res) => {
     const { userId, teamId } = req.body;
     try {
-      let users = await User.find({});
-      let teams = await Team.find({});
+      const users = await User.find({});
+      const teams = await Team.find({});
 
-      let user = await User.findById(userId);
-      let team = await Team.findById(teamId);
+      const user = await User.findById(userId);
+      const team = await Team.findById(teamId);
 
       if (team.members.indexOf(user.id) > -1) {
         res.locals.globalError = 'User is already in the team';

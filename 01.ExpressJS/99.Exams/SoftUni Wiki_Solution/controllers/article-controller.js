@@ -3,7 +3,7 @@ const Edit = require('../models/Edit');
 const User = require('../models/User');
 
 function validateArticle(article) {
-  let errors = [];
+  const errors = [];
 
   if (article.title === '') {
     errors.push('Title is required!');
@@ -68,7 +68,9 @@ module.exports = {
       .populate('edits')
       .then((article) => {
         const edits = article.edits;
-        let splitedContent = edits[edits.length - 1].content.split('\r\n\r\n');
+        const splitedContent = edits[edits.length - 1].content.split(
+          '\r\n\r\n'
+        );
         article.splitedContent = splitedContent;
         res.render('article/details', article);
       })
@@ -159,7 +161,9 @@ module.exports = {
       .then((articles) => {
         const latestArticle = articles[0];
         const edits = latestArticle.edits;
-        let splitedContent = edits[edits.length - 1].content.split('\r\n\r\n');
+        const splitedContent = edits[edits.length - 1].content.split(
+          '\r\n\r\n'
+        );
         latestArticle.splitedContent = splitedContent;
         res.render('article/details', latestArticle);
       })

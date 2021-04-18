@@ -72,9 +72,9 @@ module.exports = {
       errorHandler(e);
     }
 
-    function errorHandler(e) {
-      console.log(e);
-      res.locals.globalError = e;
+    function errorHandler(err) {
+      console.log(err);
+      res.locals.globalError = err;
       res.render('users/login');
     }
   },
