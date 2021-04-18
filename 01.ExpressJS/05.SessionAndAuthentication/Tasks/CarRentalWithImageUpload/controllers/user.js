@@ -81,12 +81,12 @@ module.exports = {
     }
   },
   userRents: (req, res) => {
-    let userId = req.user._id;
+    const userId = req.user._id;
 
     Rent.find({ owner: userId }).then((rents) => {
-      let carsIds = [];
+      const carsIds = [];
 
-      for (let rent of rents) {
+      for (const rent of rents) {
         carsIds.push(rent.car);
       }
 

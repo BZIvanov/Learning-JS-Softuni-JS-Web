@@ -71,7 +71,7 @@ const viewAddMeme = (req, res, status = null) => {
       let exitString = '';
       console.log(genres);
 
-      for (let genre of genres) {
+      for (const genre of genres) {
         exitString += memeTemplates.genreOption(genre.id, genre.title);
       }
 
