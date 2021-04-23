@@ -41,7 +41,7 @@ module.exports = {
     const carId = req.params.id;
     const { days } = req.body;
 
-    let rent = await Rent.create({
+    const rent = await Rent.create({
       days,
       car: carId,
       owner: req.user._id,
