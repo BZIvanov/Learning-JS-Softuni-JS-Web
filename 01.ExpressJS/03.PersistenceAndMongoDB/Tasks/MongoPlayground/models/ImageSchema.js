@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 
-const imageSchema = new mongoose.Schema({
-  url: { type: mongoose.SchemaTypes.String, required: true },
+const imageSchema = new Schema({
+  url: { type: String, required: true },
   creationDate: {
-    type: mongoose.SchemaTypes.Date,
+    type: Date,
     required: true,
     default: Date.now,
   },
-  title: { type: mongoose.SchemaTypes.String, required: true },
-  description: { type: mongoose.SchemaTypes.String, required: true },
-  tags: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Tag' }],
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
 });
 
-module.exports = mongoose.model('Image', imageSchema);
+module.exports = model('Image', imageSchema);

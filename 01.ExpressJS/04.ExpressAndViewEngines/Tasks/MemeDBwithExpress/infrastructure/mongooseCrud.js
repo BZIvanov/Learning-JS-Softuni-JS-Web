@@ -4,7 +4,7 @@ module.exports = (Model) => {
   return {
     create: (modelData) =>
       new Promise((resolve, reject) => {
-        let entity = new Model(modelData);
+        const entity = new Model(modelData);
         entity
           .save()
           .then(() => {
@@ -38,7 +38,7 @@ module.exports = (Model) => {
       new Promise((resolve, reject) => {
         Model.findById(id).then((existingEntity) => {
           if (!existingEntity) {
-            let message = `${modelName} with id: ${id} does not exist`;
+            const message = `${modelName} with id: ${id} does not exist`;
             console.log(message);
             reject(message);
             return;
