@@ -14,6 +14,12 @@ function staticHandler(req, res) {
       'content-type': mimeTypes[extension],
     });
     fs.readFile('.' + req.path, 'utf8', (err, data) => {
+      if (err) {
+        res.write(err);
+        res.end();
+        return;
+      }
+
       res.write(data);
       res.end();
     });
