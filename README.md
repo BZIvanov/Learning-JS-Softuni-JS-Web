@@ -44,3 +44,7 @@ Open terminal in the root folder with package.json file and run one of the follo
 ## Additional
 
 Check [here](https://github.com/LeCoupa/awesome-cheatsheets) for cheat-sheet with methods usage.
+
+## Specifics
+
+- If we require one file twice or more, every next time we will be getting the result from the first require usage. This is because node.js is checking if the file was already required and it is caching it after the first time and returning from the cache every next time. You can check this, if you debug and step into the process of requiring and will be able to see the check for already cached required files.
