@@ -1,3 +1,4 @@
+// this is just as an example of how event emitter works under the hood, in real examples we would use the built in Node.js event emiiter
 function Emitter() {
   this.events = {};
 }
