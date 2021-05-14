@@ -1,0 +1,6 @@
+To debug the code and analyze what is happening do the next steps.
+1. Place debug red dot anywhere in the javascript file.
+2. Then click the debug icon in Visual Studio code
+3. Click the JavaScriptDebugTerminal button.
+4. In the terminal run the file with node - node index.js.
+5. You can now debug the code and inspect the process of creating and working with streams.
