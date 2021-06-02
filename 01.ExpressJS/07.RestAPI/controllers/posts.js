@@ -29,7 +29,7 @@ module.exports = {
           error.statusCode = 500;
         }
 
-        // the next below will go to General error middleware handler in  the index.js file
+        // something important here is that in then, catch, promise, callbacks we need to pass the error to the next function, not just throw the error
         next(error);
       });
   },
