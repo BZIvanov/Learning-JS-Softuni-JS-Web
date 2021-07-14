@@ -1,0 +1,13 @@
+{
+  "name": "comms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "premy-command": "set MY_VAR=preCommand && node index.js",
+    "my-command": "set MY_VAR=currentCommand && node index.js",
+    "postmy-command": "set MY_VAR=postCommand && node index.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
